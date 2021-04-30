@@ -1,0 +1,251 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5efe0;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+
+/* Navbar */
+
+
+.navbar-brand {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: .25s;
+}
+
+.navbar-brand:hover {
+  color: #541987;
+  transition: .5s;
+
+}
+
+.nav-link {
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  transition: .25s;
+}
+
+.nav-link:hover {
+  color: #541987;
+  transition: .5s;
+}
+
+#dropdown {
+  display: none;
+}
+
+@media only screen and (max-width: 1025px) {
+  
+  #dropdown {
+    display: block !important;
+    float: right;
+    margin-right: 4rem;
+  } 
+
+  #myNav {
+    display: none !important;
+  }
+}
+
+
+#main-content img {
+  width: 100%;
+}
+
+
+#quick-booking span {
+  color: #2c43c7;
+  margin-right: 10px;
+  text-align: center;
+  align-self: center;
+  font-weight: 700;
+}
+
+
+#user-info-section .personal-information-link a:hover {
+  color: rgb(16, 116, 13) !important;
+  transition: .5s;
+}
+
+
+#user-info-section .reservations-link a:hover {
+  color: rgb(20, 20, 20) !important;
+  transition: .5s;
+}
+
+#reservations-section .personal-information-link a:hover {
+  color: rgb(16, 116, 13) !important;
+  transition: .5s;
+}
+
+
+#reservations-section .reservations-link a:hover {
+  color: rgb(20, 20, 20) !important;
+  transition: .5s;
+}
+
+.logout {
+  background: #198754;
+  color: rgb(146, 38, 38);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: rgb(146, 38, 38) 3px solid;
+  transition: .5s;
+}
+
+#logout:hover {
+  background-color: rgb(146, 38, 38);
+  color: #198754;
+  transition: .5s;
+}
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 15%;
+  left: 0;
+  background-color: #19875486;
+  overflow-x: hidden;
+  padding-top: 0;
+  border-right: 5px solid #198754;
+  
+}
+
+.sidenav a {
+  padding: 24px 16px 24px 16px;
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: .25s;
+  border-bottom: 2px solid #198754;
+}
+
+.sidenav a:hover {
+  color: #198754;
+  transition: .25s;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 16px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+
+.myRooms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+
+
+
+/* Slider  */
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50vh;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.myFade {
+  -webkit-animation-name: myFade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: myFade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes myFade {
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes myFade {
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
+}
