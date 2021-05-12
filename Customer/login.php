@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-<!DOCTYPE php>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -35,23 +35,23 @@
 
         <nav class="navbar">
             <div class="container bg-success mb-5" style="height: 5rem">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     HOTEL MAZARIN
                 </a>
 
 
                 <ul class="nav d-flex justify-content-between" style="width:50%">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">HOME</a>
+                        <a class="nav-link" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rooms-suites.html">ROOMS/SUITES</a>
+                        <a class="nav-link" href="rooms-suites.php">ROOMS/SUITES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="events.html">EVENTS</a>
+                        <a class="nav-link" href="events.php">EVENTS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">CONTACT</a>
+                        <a class="nav-link" href="contact.php">CONTACT</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php" style="text-decoration:underline;">LOGIN</a>
@@ -92,8 +92,9 @@
             $result1 = $conn->query("SELECT username, password FROM users WHERE username = '" . $username . "' AND  password = '" . $password . "'");
 
             if ($result1->num_rows > 0) {
-                $_SESSION["logged_in"] = true;
-                $_SESSION["username"] = $username;
+                session_regenerate_id(true);
+                $_SESSION['logged_in'] = true;
+                $_SESSION['username'] = $username;
 
 
 
@@ -164,7 +165,7 @@
 
 
                             <div class="d-flex justify-content-center mt-3 login_container">
-                                <a href="user-personal-infos.html">
+                                <a href="user-personal-infos.php">
                                     <button type="submit" name="button" class="btn login_btn btn-primary">Login</button>
                                 </a>
                             </div>

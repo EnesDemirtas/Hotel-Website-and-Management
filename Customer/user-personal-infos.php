@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-<!DOCTYPE php>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,13 +10,10 @@
     <meta name="description" content="Hotel Mazarin">
 
     <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
     <!--Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,35 +30,44 @@
     <!--Navbar Start-->
 
 
+
+
     <header class="header">
 
         <nav class="navbar">
             <div class="container bg-success mb-5" style="height: 5rem">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     HOTEL MAZARIN
                 </a>
 
 
                 <ul class="nav d-flex justify-content-between" style="width:50%">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">HOME</a>
+                        <a class="nav-link" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rooms-suites.html">ROOMS/SUITES</a>
+                        <a class="nav-link" href="rooms-suites.php">ROOMS/SUITES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="events.html">EVENTS</a>
+                        <a class="nav-link" href="events.php">EVENTS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">CONTACT</a>
+                        <a class="nav-link" href="contact.php">CONTACT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="#" style="text-decoration:underline;"><?php echo $_SESSION['session_username']?></a>
+                        <a class="nav-link text-uppercase" href="#" style="text-decoration:underline;"><?php echo $_SESSION['session_username'] ?></a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link logout" href="login.php">
+                        <!-- <a class="nav-link logout" href="login.php">
                                 Log out <span><i class="fa fa-sign-out-alt"></i></span>
-                            </a>
+                            </a> -->
+                        <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                            <button type="submit" name="navbar-logout" class="border-0">
+                                <a class="nav-link logout" href="exit.php">
+                                    Log out <span><i class="fa fa-sign-out-alt"></i></span>
+                                </a>
+                            </button>
+                        </form>
                     </li>
                 </ul>
 
@@ -97,7 +103,8 @@
                 <div class="col-3 reservations-link">
                     <a href="reservations.php" style="color: rgba(39, 39, 39, 0.822); transition: .25s;">
                         <h3 style="font-weight: 600;">Reservations</h3>
-                    </a> </div>
+                    </a>
+                </div>
             </div>
 
             <div class="row">
@@ -219,8 +226,7 @@
     <!--Footer End-->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
 
     <script src="../app.js"></script>

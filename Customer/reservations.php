@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-<!DOCTYPE php>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -34,32 +34,50 @@
 
         <nav class="navbar">
             <div class="container bg-success mb-5" style="height: 5rem">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     HOTEL MAZARIN
                 </a>
 
 
                 <ul class="nav d-flex justify-content-between" style="width:50%">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">HOME</a>
+                        <a class="nav-link" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="rooms-suites.html">ROOMS/SUITES</a>
+                        <a class="nav-link" href="rooms-suites.php">ROOMS/SUITES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="events.html">EVENTS</a>
+                        <a class="nav-link" href="events.php">EVENTS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">CONTACT</a>
+                        <a class="nav-link" href="contact.php">CONTACT</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="#" style="text-decoration:underline;"><?php echo $_SESSION['session_username'] ?></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link logout" href="login.php">
-                            Log out <span><i class="fa fa-sign-out-alt"></i></span>
-                        </a>
-                    </li>
+                    <?php
+
+                    if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
+
+                        echo "<li class='nav-item'>
+        <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+    </li>
+    <li class='nav-item'>
+    <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>
+        <button type='submit' name='navbar-logout' class='border-0'>
+            <a class='nav-link logout' href='exit.php'>
+                Log out <span><i class='fa fa-sign-out-alt'></i></span>
+            </a>
+        </button>
+    </form>
+    </li>";
+                    } else {
+                        echo " <li class='nav-item'>
+        <a class='nav-link' href='login.php'>LOGIN</a>
+    </li>";
+                    }
+
+
+
+
+                    ?>
 
                 </ul>
 
@@ -100,7 +118,7 @@
 
                 </div>
                 <div class="col-3">
-                    <a href="reservation.html">
+                    <a href="reservation.php">
                         <button class="btn btn-success ms-5">New Reservation</button>
                     </a>
                 </div>
@@ -162,7 +180,7 @@
                     </div>
 
                     <div class="buttons m-5">
-                        <a href="reservation.html">
+                        <a href="reservation.php">
                             <button class="btn btn-success me-5">Book Again</button>
                         </a>
                     </div>
