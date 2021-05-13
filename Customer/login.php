@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start(); include 'databaseConnection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,17 +69,7 @@
 
     <?php
 
-    $servername = "localhost";
-    $username_con = "root";
-    $password_con = "";
-    $dbname = "hms";
 
-    // Create connection
-    $conn = new mysqli($servername, $username_con, $password_con, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
     if (isset($_POST['login_username'])) {
         $username = $_POST['login_username'];
         $password = $_POST['login_password'];

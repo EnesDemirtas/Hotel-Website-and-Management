@@ -1,4 +1,5 @@
-<?php session_start(); ?>
+<?php session_start();
+include 'databaseConnection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,32 +126,58 @@
             </div>
 
 
-            <div class="row mt-5">
-                <div class="col-4 events-main-content-img">
-                    <img src="../images/room_1.jpg" alt="" style="max-width:700px; max-height:600px; width: 100%;">
-                </div>
 
-                <div class="col-5">
-
-                    <div class="events-main-content-text">
-                        <p class="m-5" style="font-size:14px; letter-spacing:.25px;">Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit.
-                            Mollitia sit, adipisci sunt rerum
-                            ipsam,
-                            tempora ex culpa quas pariatur odit voluptates ea veniam animi distinctio libero eius maxime
-                            dicta illum expedita dolores enim quae, hic eligendi. Esse earum, nulla quia autem porro vel
-                            voluptas illo repudiandae optio necessitatibus quam reiciendis.</p>
-
-
+            <section id="current-reservations">
+                <!-- <div class="row mt-5">
+                    <div class="col-4 events-main-content-img">
+                        <img src="../images/room_1.jpg" alt="" style="max-width:700px; max-height:600px; width: 100%;">
                     </div>
 
-                    <div class="buttons m-5">
-                        <button class="btn btn-secondary me-5">Change Reservation Date</button>
-                        <button class="btn btn-danger ms-5">Cancel Reservation</button>
-                    </div>
+                    <div class="col-5">
 
-                </div>
-            </div>
+                        <div class="events-main-content-text">
+                            <p class="m-5" style="font-size:14px; letter-spacing:.25px;">Lorem ipsum dolor sit amet
+                                consectetur adipisicing elit.
+                                Mollitia sit, adipisci sunt rerum
+                                ipsam,
+                                tempora ex culpa quas pariatur odit voluptates ea veniam animi distinctio libero eius maxime
+                                dicta illum expedita dolores enim quae, hic eligendi. Esse earum, nulla quia autem porro vel
+                                voluptas illo repudiandae optio necessitatibus quam reiciendis.</p>
+
+
+                        </div>
+
+                        <div class="buttons m-5">
+                            <button class="btn btn-secondary me-5">Change Reservation Date</button>
+                            <button class="btn btn-danger ms-5">Cancel Reservation</button>
+                        </div>
+
+                    </div>
+                </div> -->
+            </section>
+            <?php
+
+            $current_date = date('Y-m-d');
+
+            $checkCurrentReservations = mysqli_query($conn, "SELECT room_no, check_in_date, check_out_date FROM reservation_records rr INNER JOIN users u ON rr.customer_id = u.id  WHERE  u.username = '" . $_SESSION['session_username'] . "' AND rr.check_out_date >= '" . $current_date . "'");
+
+            $currentReservations = $checkCurrentReservations->fetch_all(1);
+
+
+
+            for ($x = 0; $x < sizeof($currentReservations); $x++) {
+                $check_out_date = $currentReservations[$x]['check_out_date'];
+
+                echo "
+                    <script type=\"text/javascript\" src=\"listReservations.js\">
+                    </script> 
+                    ";
+            }
+
+
+
+            ?>
+
 
             <hr class="my-5" style="width:100%; height: 3px; color: #000">
 
@@ -268,6 +295,7 @@
     </script>
 
     <script src="../app.js"></script>
+    <!-- <script src="listReservations.js"></script> -->
 </body>
 
 </html>
