@@ -1,5 +1,6 @@
 <?php session_start();
-include 'databaseConnection.php'; ?>
+include 'databaseConnection.php';
+include 'listReservations.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +19,8 @@ include 'databaseConnection.php'; ?>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
 
 
 
@@ -128,6 +131,9 @@ include 'databaseConnection.php'; ?>
 
 
             <section id="current-reservations">
+                <div class="current-reservations-header">
+                    <h2>Current Reservations</h2>
+                </div>
                 <!-- <div class="row mt-5">
                     <div class="col-4 events-main-content-img">
                         <img src="../images/room_1.jpg" alt="" style="max-width:700px; max-height:600px; width: 100%;">
@@ -156,33 +162,18 @@ include 'databaseConnection.php'; ?>
                 </div> -->
             </section>
             <?php
-
-            $current_date = date('Y-m-d');
-
-            $checkCurrentReservations = mysqli_query($conn, "SELECT room_no, check_in_date, check_out_date FROM reservation_records rr INNER JOIN users u ON rr.customer_id = u.id  WHERE  u.username = '" . $_SESSION['session_username'] . "' AND rr.check_out_date >= '" . $current_date . "'");
-
-            $currentReservations = $checkCurrentReservations->fetch_all(1);
-
-
-
-            for ($x = 0; $x < sizeof($currentReservations); $x++) {
-                $check_out_date = $currentReservations[$x]['check_out_date'];
-
-                echo "
-                    <script type=\"text/javascript\" src=\"listReservations.js\">
-                    </script> 
-                    ";
-            }
-
-
-
+            
+            listCurrentReservations($conn);
             ?>
 
 
             <hr class="my-5" style="width:100%; height: 3px; color: #000">
 
-
-            <div class="row mt-5">
+            <section id="past-reservations">
+                <div class="past-reservations-header">
+                    <h2>Past Reservations</h2>
+                </div>
+                <!-- <div class="row mt-5">
 
                 <div class="header mb-5">
                     <h3>Past Reservations</h3>
@@ -213,7 +204,13 @@ include 'databaseConnection.php'; ?>
                     </div>
 
                 </div>
-            </div>
+            </div> -->
+
+            </section>
+            <?php
+            
+            listPastReservations($conn);
+            ?>
 
 
 

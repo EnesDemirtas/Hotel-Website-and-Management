@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start();
+include 'databaseConnection.php';
+include 'getPersonalInfos.php';
+require "../phpFunctions/routing.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,10 +110,75 @@
                 </div>
             </div>
 
+            <?php
+
+            $user_infos = getPersonalInfos($conn);
+
+            echo "
+            <script type=\"text/javascript\">
+            function confirmChanges(){
+                if(confirm(\"Are you sure you want to change your information?\")){
+                    " . saveUserChanges($conn) . "
+                } 
+            }
+            </script>
+            ";
+
+
+            ?>
+
             <div class="row">
-                <form class="col-8 my-4">
+                <form class="col-8 my-4" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
                     <div class="row form-row mb-4">
-                        <div class="col-6">
+
+                        <?php
+
+                        $user_infos = getPersonalInfos($conn);
+                        echo "
+                    <div class='col-6'>
+                    <label for='name'>Username</label>
+                    <input type='text' name='username' id='username' readonly class='form-control' value='" . $user_infos['username'] . "'>
+                </div>
+
+                <div class='col-6'>
+                    <label for='Fullname'>Full Name</label>
+                    <input type='text' name='fullname' id='fullname' class='form-control' value='" . $user_infos['name'] . "'>
+                </div>
+            </div>
+
+
+            <div class='row form-row mb-4'>
+                <div class='col-6'>
+                    <label for='telephone'>Telephone</label>
+                    <input type='tel' name='telephone' id='telephone' class='form-control' value='" . $user_infos['phone_number'] . "'>
+                </div>
+
+                <div class='col-6'>
+                    <label for='email'>Email</label>
+                    <input type='email' name='email' id='email' class='form-control' value='" . $user_infos['email'] . "'>
+                </div>
+            </div>
+
+
+            <div class='row form-row'>
+                <div class='col-6'>
+                    <label for='password'>Password</label>
+                    <input type='password' name='password' id='password' class='form-control' value='" . $user_infos['password'] . "'>
+                </div>
+            </div>
+
+            <div class='row'>
+
+                <div class='col-7'></div>
+                <div class='col-2'>
+                    <input type='submit' onclick=\"confirmChanges()\" name='personal-infos-changes' class='btn btn-danger' id='save-changes' value='Save Changes'>
+                </div>
+            </div>
+                    ";
+
+                        ?>
+
+                        <!-- <div class="col-6">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control">
                         </div>
@@ -148,7 +216,7 @@
                         <div class="col-2">
                             <button class="btn btn-danger">Save Changes</button>
                         </div>
-                    </div>
+                    </div> -->
                 </form>
             </div>
 

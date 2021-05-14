@@ -167,7 +167,7 @@
 
                 <div class="col-md-6 mx-4">
                     <div class="main-content-text">
-                        <h2>Relax Deluxe</h2>
+                        <h2>Standart Room</h2>
                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
                             aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
                             illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
@@ -188,12 +188,12 @@
 
             <div class="row" style="margin-bottom: 6rem">
                 <div class="col-md-4">
-                    <img src="../images/room_1.jpg" alt="">
+                    <img src="../images/room_2.jpg" alt="">
                 </div>
 
                 <div class="col-md-6 mx-4">
                     <div class="main-content-text">
-                        <h2>Relax Deluxe</h2>
+                        <h2>Platinum Room</h2>
                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
                             aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
                             illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
@@ -213,12 +213,12 @@
 
             <div class="row" style="margin-bottom: 6rem">
                 <div class="col-md-4">
-                    <img src="../images/room_1.jpg" alt="">
+                    <img src="../images/room_3.jpg" alt="">
                 </div>
 
                 <div class="col-md-6 mx-4">
                     <div class="main-content-text">
-                        <h2>Relax Deluxe</h2>
+                        <h2>Exclusive Room</h2>
                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
                             aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
                             illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
@@ -239,12 +239,12 @@
 
             <div class="row" style="margin-bottom: 6rem">
                 <div class="col-md-4">
-                    <img src="../images/room_1.jpg" alt="">
+                    <img src="../images/room_4.jpg" alt="">
                 </div>
 
                 <div class="col-md-6 mx-4">
                     <div class="main-content-text">
-                        <h2>Relax Deluxe</h2>
+                        <h2>King Suite</h2>
                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
                             aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
                             illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
