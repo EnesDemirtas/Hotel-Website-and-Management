@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start();
+include 'databaseConnection.php';
+include 'getPersonalInfos.php';
+require "../phpFunctions/routing.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +29,14 @@
 </head>
 
 <body>
+
+    <?php
+
+    if (isset($_POST['confirm-reservation'])) {
+        go("cardValidation.php");
+    }
+
+    ?>
 
     <!--Navbar Start-->
 
@@ -126,30 +137,40 @@
 
             <div class="row">
                 <form class="col-8 my-4">
-                    <div class="row form-row mb-4">
-                        <div class="col-6">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                        </div>
 
-                        <div class="col-6">
-                            <label for="lastname">Last Name</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control">
-                        </div>
+                    <?php
+
+                    $user_personal_infos = getPersonalInfos($conn);
+
+                    echo "
+                    
+                    <div class='row form-row mb-4'>
+                    <div class='col-6'>
+                        <label>Name</label>
+                        <input type='text' name='name_d' id='name_D' class='form-control border border-secondary' readonly value='" . $user_personal_infos['name'] . "'>
+                    </div>
+
+                    <div class='col-6'>
+                    <label for='email'>Email</label>
+                    <input type='email' name='email' id='email' class='form-control border border-secondary' readonly value='" . $user_personal_infos['email'] . "'>
+                </div>
+ 
+                </div>
+
+
+                <div class='row form-row mb-4'>
+                    <div class='col-6'>
+                        <label for='telephone'>Telephone</label>
+                        <input type='tel' name='telephone' id='telephone' class='form-control border border-secondary' readonly value='" . $user_personal_infos['phone_number'] . "'>
                     </div>
 
 
-                    <div class="row form-row mb-4">
-                        <div class="col-6">
-                            <label for="telephone">Telephone</label>
-                            <input type="tel" name="telephone" id="telephone" class="form-control">
-                        </div>
+                </div>
+                    
+                    ";
 
-                        <div class="col-6">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control">
-                        </div>
-                    </div>
+                    ?>
+
 
                 </form>
             </div>
@@ -161,7 +182,7 @@
                 consequuntur, quae sequi doloribus harum consectetur natus cum iste suscipit debitis, hic dolorem alias
                 delectus! Molestiae nobis aliquam ratione quidem at quibusdam incidunt repudiandae!</p>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-2">
                     <label for="special-request" style="font-weight:500; font-size:14px">Special Request</label>
                 </div>
@@ -175,10 +196,29 @@
             </div>
 
 
-            <h4 class=" my-5" style="font-weight:400; letter-spacing:1px">Payment Details</h4>
+            <h4 class=" my-5" style="font-weight:400; letter-spacing:1px">Payment Details</h4> -->
+
+
 
             <div class="row">
-                <form class="col-8 my-4">
+                <form class="col-8 my-4" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="special-request" style="font-weight:500; font-size:14px">Special Request</label>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-6">
+                            <textarea name="special-request" id="special-request" cols="90" rows="10" style="resize: none;"></textarea>
+                        </div>
+                    </div>
+
+
+                    <h4 class=" my-5" style="font-weight:400; letter-spacing:1px">Payment Details</h4>
+
+
                     <div class="row form-row mb-4">
                         <div class="col-6">
                             <label for="name">Name</label>
@@ -199,7 +239,7 @@
                         </div>
 
                         <div class="col-6">
-                            <label>MM/YY</label>
+                            <label class="text-center">MM/YY</label>
                             <!-- <input type="email" name="email" id="email" class="form-control"> -->
                             <div class="row">
                                 <div class="col-md-3">
@@ -217,18 +257,23 @@
                                         <option value='10'>October</option>
                                         <option value='11'>November</option>
                                         <option value='12'>December</option>
-                                    </select> 
+                                    </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select name='expireYY' id='expireYY'>
                                         <option value=''>Year</option>
-                                        <option value='20'>2020</option>
-                                        <option value='21'>2021</option>
-                                        <option value='22'>2022</option>
-                                        <option value='23'>2023</option>
-                                        <option value='24'>2024</option>
-                                    </select> 
-                                    <input class="inputCard" type="hidden" name="expiry" id="expiry" maxlength="4"/>
+                                        <option value='2021'>2021</option>
+                                        <option value='2022'>2022</option>
+                                        <option value='2023'>2023</option>
+                                        <option value='2024'>2024</option>
+                                        <option value='2025'>2025</option>
+                                        <option value='2026'>2026</option>
+                                        <option value='2027'>2027</option>
+                                        <option value='2028'>2028</option>
+                                        <option value='2029'>2029</option>
+
+                                    </select>
+
                                 </div>
                             </div>
                         </div>
@@ -240,8 +285,8 @@
                             <input type="number" name="cvc" id="cvc" class="form-control w-25">
                         </div>
 
-                        <div class="col-6">
-                            <button class="btn btn-success">Confirm Reservation</button>
+                        <div class="col-6 mt-4">
+                            <input type='submit' name='confirm-reservation' class='btn btn-success' id='confirm-reservation' value='Confirm Reservation'>
                         </div>
                     </div>
 
@@ -321,9 +366,8 @@
     <!--Footer End-->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
 
     <script src="../app.js"></script>
 

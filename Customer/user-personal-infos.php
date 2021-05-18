@@ -113,7 +113,7 @@ require "../phpFunctions/routing.php"; ?>
             <?php
 
             $user_infos = getPersonalInfos($conn);
-
+            
             echo "
             <script type=\"text/javascript\">
             function confirmChanges(){

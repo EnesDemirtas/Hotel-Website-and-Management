@@ -38,7 +38,7 @@ var myElement = `<div class="row mt-5">
     
         `;
 
-if(isCurrent){
+if (isCurrent) {
     myElement += `        <div class="buttons m-5">
     <button class="btn btn-secondary me-5">Change Reservation Date</button>
     <button class="btn btn-danger ms-5">Cancel Reservation</button>
@@ -46,6 +46,9 @@ if(isCurrent){
 
 </div>
 </div>`;
+
+    current_reservations.innerHTML += myElement;
+
 } else {
     myElement += `        <div class="buttons m-5">
     <button class="btn btn-primary me-5">Let us know your review</button>
@@ -54,15 +57,7 @@ if(isCurrent){
 
 </div>
 </div>`;
-}
 
-if (isCurrent) {
-    current_reservations.innerHTML += myElement;
-} else {
     past_reservations.innerHTML += myElement;
+
 }
-
-
-
-
-

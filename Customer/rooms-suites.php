@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+include 'databaseConnection.php';
+include 'listAvailableRooms.php' ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,6 +26,36 @@
 </head>
 
 <body>
+
+    <script>
+        function addEventListenersToButtons() {
+
+            var allButtons = document.getElementsByClassName('book-button');
+            
+            var rooms_main_content = document.getElementById('rooms-main-content');
+
+            rooms_main_content.addEventListener('click', run);
+
+            function run(e){
+                if(e.target.tagName = 'button'){
+                    console.log(e.target);
+                }
+            }
+
+        }
+    </script>
+
+    <?php
+
+    echo "
+    <script type=\"text/javascript\">
+    function bookSelectedRoom(){
+
+    }
+    </script>
+    ";
+
+    ?>
 
     <!--Navbar Start-->
 
@@ -108,59 +140,140 @@
 
 
     <!--Room Search Start-->
-    <section id="room-searching">
-        <div class="container">
-            <div class="row form-row d-flex justify-content-between align-items-center">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <span class="text-center" style="color: #2c43c7; font-weight:700;">Check In</span>
-                        <input class="form-control inline-block" type="date" name="checkin" id="checkin-room-searching">
+
+
+
+
+    <?php
+
+
+
+
+
+    $current_date = date('Y-m-d');
+    $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));
+
+
+
+    // if(isset($_POST['list-available-rooms'])){
+    //     $user_check_in_date = $_POST['checkin-room-searching'];
+    //     $user_check_out_date = $_POST['checkout-room-searching'];
+    //     $user_adults = $_POST['adults-room-searching'];
+    //     $user_children = $_POST['children-room-searching'];
+
+
+    //     listAvailableRooms($conn, $user_check_in_date, $user_check_out_date, $user_adults, $user_children);
+
+
+
+    //  } else {
+    //      listAvailableRooms($conn, $current_date, $tomorrow_date, 1, 1);
+    //  }
+
+
+
+    echo "
+    <section id='room-searching'>
+    <div class='container'>
+        <form id='available-rooms-searching' method='POST'>
+            <div class='row form-row d-flex justify-content-between align-items-center'>
+                <div class='col-md-3'>
+                    <div class='form-group'>
+                        <span class='text-center' style='color: #2c43c7; font-weight:700;'>Check In</span>
+                        <input class='form-control inline-block' type='date' name='checkin-room-searching' id='checkin-room-searching' value='" . $current_date . "'>
                     </div>
                 </div>
 
 
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <span class="text-center" style="color: #2c43c7; font-weight:700;">Check Out</span>
-                        <input class="form-control inline-block" type="date" name="checkout" id="checkout-room-searching">
+                <div class='col-md-3'>
+                    <div class='form-group'>
+                        <span class='text-center' style='color: #2c43c7; font-weight:700;'>Check Out</span>
+                        <input class='form-control inline-block' type='date' name='checkout-room-searching' id='checkout-room-searching' value='" . $tomorrow_date . "'>
                     </div>
                 </div>
 
 
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <span class="text-center" style="color: #2c43c7; font-weight:700;">Adults</span>
-                        <input class="form-control inline-block" type="number" name="adults" id="adults-room-searching">
+                <div class='col-md-2'>
+                    <div class='form-group'>
+                        <span class='text-center' style='color: #2c43c7; font-weight:700;'>Adults</span>
+                        <select class='form-control' type='number' name='adults-room-searching' id='adults-room-searching' value='1'>
+                            <option value='1'>1</option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='4'>4</option>
+                        </select>
+   
                     </div>
                 </div>
 
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <span class="text-center" style="color: #2c43c7; font-weight:700;">Children</span>
-                        <input class="form-control inline-block" type="number" name="children" id="children-room-searching">
+
+                <div class='col-md-2'>
+                    <div class='form-group'>
+                        <span class='text-center' style='color: #2c43c7; font-weight:700;'>Children</span>
+                        <select class='form-control inline-block' type='number' name='children-room-searching' id='children-room-searching' value='1'>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                        <option value='7'>7</option>
+                        <option value='8'>8</option>
+                        </select>
                     </div>
                 </div>
 
 
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-secondary text-center mt-3" style="display: inline-block;">Search</button>
+                <div class='col-md-2'>
+                <input type='submit'  name='list-available-rooms' class='btn btn-secondary' id='list-available-rooms' value='Search'>
                 </div>
             </div>
+        </form>
 
 
 
 
 
-        </div>
+    </div>
+</section>
+
+
+
+
+    <section id='main-content'>
+    <div class='container' id='rooms-main-content' style='margin-top: 6rem'>
+
+
+
+    </div>
     </section>
+
+    
+    ";
+
+    if (isset($_POST['list-available-rooms'])) {
+        $user_check_in_date = $_POST['checkin-room-searching'];
+        $user_check_out_date = $_POST['checkout-room-searching'];
+        $user_adults = $_POST['adults-room-searching'];
+        $user_children = $_POST['children-room-searching'];
+
+        listAvailableRooms($conn, $user_check_in_date, $user_check_out_date, $user_adults, $user_children);
+    } else {
+        listAvailableRooms($conn, $current_date, $tomorrow_date, 1, 1);
+    }
+    ?>
+
+
+
+
 
     <!--Room Search End-->
 
     <!--Main Content Start-->
 
-    <section id="main-content">
-        <div class="container" style="margin-top: 6rem">
-            <div class="row" style="margin-bottom: 6rem">
+    <!-- <section id="main-content">
+        <div class="container" id="rooms-main-content" style="margin-top: 6rem"> -->
+    <!-- <div class="row" style="margin-bottom: 6rem">
                 <div class="col-md-4">
                     <img src="../images/room_1.jpg" alt="">
                 </div>
@@ -183,86 +296,13 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
-            <div class="row" style="margin-bottom: 6rem">
-                <div class="col-md-4">
-                    <img src="../images/room_2.jpg" alt="">
-                </div>
-
-                <div class="col-md-6 mx-4">
-                    <div class="main-content-text">
-                        <h2>Platinum Room</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
-                            aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
-                            illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
-                            Ducimus provident ipsam, dicta adipisci pariatur atque facilis, non commodi voluptate
-                            itaque quae? Non similique dolorum nam sit fugiat minus itaque aliquid optio! Voluptatum
-                            alias pariatur nesciunt aspernatur natus, totam animi atque autem.</p>
-
-                    </div>
-
-                    <div class="main-content-button d-flex justify-content-end">
-                        <a href="reservation.php">
-                            <button class="btn btn-danger">Book Now</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="margin-bottom: 6rem">
-                <div class="col-md-4">
-                    <img src="../images/room_3.jpg" alt="">
-                </div>
-
-                <div class="col-md-6 mx-4">
-                    <div class="main-content-text">
-                        <h2>Exclusive Room</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
-                            aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
-                            illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
-                            Ducimus provident ipsam, dicta adipisci pariatur atque facilis, non commodi voluptate
-                            itaque quae? Non similique dolorum nam sit fugiat minus itaque aliquid optio! Voluptatum
-                            alias pariatur nesciunt aspernatur natus, totam animi atque autem.</p>
-
-                    </div>
-
-                    <div class="main-content-button d-flex justify-content-end">
-                        <a href="reservation.php">
-                            <button class="btn btn-danger">Book Now</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- </div>
+    </section> -->
 
 
-            <div class="row" style="margin-bottom: 6rem">
-                <div class="col-md-4">
-                    <img src="../images/room_4.jpg" alt="">
-                </div>
-
-                <div class="col-md-6 mx-4">
-                    <div class="main-content-text">
-                        <h2>King Suite</h2>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque ut illum, placeat minima
-                            aliquam eos? Quaerat obcaecati et atque fuga ipsa cumque reprehenderit animi, est quos
-                            illum quas doloremque consequatur sapiente quis facere aliquid facilis quasi hic!
-                            Ducimus provident ipsam, dicta adipisci pariatur atque facilis, non commodi voluptate
-                            itaque quae? Non similique dolorum nam sit fugiat minus itaque aliquid optio! Voluptatum
-                            alias pariatur nesciunt aspernatur natus, totam animi atque autem.</p>
-
-                    </div>
-
-                    <div class="main-content-button d-flex justify-content-end">
-                        <a href="reservation.php">
-                            <button class="btn btn-danger">Book Now</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
 
