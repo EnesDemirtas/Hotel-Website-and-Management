@@ -1,7 +1,8 @@
 <?php session_start();
 include 'databaseConnection.php';
 include 'getPersonalInfos.php';
-require "../phpFunctions/routing.php"; ?>
+require "../phpFunctions/routing.php"; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,12 @@ require "../phpFunctions/routing.php"; ?>
     <?php
 
     if (isset($_POST['confirm-reservation'])) {
-        go("cardValidation.php");
+        if (empty($_POST['name']) or empty($_POST['lastname']) or empty($_POST['card-number']) or empty($_POST['expireMM']) or empty($_POST['expireYY']) or empty($_POST['cvc'])) {
+            echo "<div class='text-center bg-danger text-white'> Please provide all inputs correctly... </div>";
+        } else{
+            $_SESSION['booking_special_request'] = $_POST['special-request'];
+            go("cardValidation.php");
+        }
     }
 
     ?>
@@ -102,6 +108,24 @@ require "../phpFunctions/routing.php"; ?>
 
     <!--User Info Section Start-->
 
+    <?php
+
+    if (isset($_POST['book-button'])) {
+        $_SESSION['booking_room_no'] = $_POST['booking-room-no'];
+        $_SESSION['booking_room_name'] = $_POST['booking-room-name'];
+        $_SESSION['booking_room_type'] = $_POST['booking-room-type'];
+        $_SESSION['booking_total_price'] = $_POST['booking-total-price'];
+        $_SESSION['booking_adults'] = $_POST['booking-adults'];
+        $_SESSION['booking_children'] = $_POST['booking-children'];
+        $_SESSION['booking_check_in_date'] = $_POST['booking-check-in-date'];
+        $_SESSION['booking_check_out_date'] = $_POST['booking-check-out-date'];
+
+        echo $_SESSION['booking_check_in_date'] . " , ". $_SESSION['booking_check_out_date']; 
+    }
+
+    ?>
+
+
     <section id="user-info-section">
         <div class="container">
             <div class="row">
@@ -112,13 +136,14 @@ require "../phpFunctions/routing.php"; ?>
 
             <div class="row mt-5">
                 <div class="col-4 events-main-content-img">
-                    <img src="../images/room_1.jpg" alt="" style="max-width:700px; max-height:600px; width: 100%;">
+                    <img src="../images/room_<?php echo $_SESSION['booking_room_type'] ?>.jpg" alt="" style="max-width:700px; max-height:600px; width: 100%;">
                 </div>
 
-                <div class="col-5">
+                <div class="col-5 mx-4">
 
                     <div class="events-main-content-text">
-                        <p class="m-5" style="font-size:14px; letter-spacing:.25px;">Lorem ipsum dolor sit amet
+                        <h2><?php echo $_SESSION['booking_room_name'] . " | " . $_SESSION['booking_room_no'] ?></h2>
+                        <p style="font-size:14px; letter-spacing:.25px;">Lorem ipsum dolor sit amet
                             consectetur adipisicing elit.
                             Mollitia sit, adipisci sunt rerum
                             ipsam,
@@ -128,6 +153,9 @@ require "../phpFunctions/routing.php"; ?>
 
 
                     </div>
+
+                    <h4 class="my-4">Total Price: <?php echo $_SESSION['booking_total_price'] ?></h4>
+                    <h5>Adults: <?php echo $_SESSION['booking_adults']?>   Children: <?php echo $_SESSION['booking_children']?></h5>
 
 
                 </div>
@@ -175,36 +203,11 @@ require "../phpFunctions/routing.php"; ?>
                 </form>
             </div>
 
-
-            <h4 class="my-5" style="font-weight:400; letter-spacing:1px">Room Details</h4>
-            <p class="w-50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, commodi sequi, magni
-                possimus amet totam quaerat alias eaque id a expedita? Voluptates asperiores autem qui animi
-                consequuntur, quae sequi doloribus harum consectetur natus cum iste suscipit debitis, hic dolorem alias
-                delectus! Molestiae nobis aliquam ratione quidem at quibusdam incidunt repudiandae!</p>
-
-            <!-- <div class="row">
-                <div class="col-md-2">
-                    <label for="special-request" style="font-weight:500; font-size:14px">Special Request</label>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-6">
-                    <textarea name="special-request" id="special-request" cols="90" rows="10"></textarea>
-                </div>
-            </div>
-
-
-            <h4 class=" my-5" style="font-weight:400; letter-spacing:1px">Payment Details</h4> -->
-
-
-
             <div class="row">
                 <form class="col-8 my-4" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
                     <div class="row">
-                        <div class="col-md-2">
-                            <label for="special-request" style="font-weight:500; font-size:14px">Special Request</label>
+                        <div class="col-md-3">
+                            <label for="special-request" style="font-weight:500; font-size:14px">Special Request <small><i>*Optional</i></small></label>
                         </div>
                     </div>
 

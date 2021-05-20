@@ -12,12 +12,14 @@ function getPersonalInfos($conn){
      return $p_infos;
 }
 
+
+
 function saveUserChanges($conn){
     if (isset($_POST['personal-infos-changes'])) {
-        $new_user_infos_fullname = $_POST['fullname'];
-        $new_user_infos_telephone = $_POST['telephone'];
-        $new_user_infos_email = $_POST['email'];
-        $new_user_infos_password = $_POST['password'];
+        $new_user_infos_fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
+        $new_user_infos_telephone =  mysqli_real_escape_string($conn, $_POST['telephone']);
+        $new_user_infos_email =  mysqli_real_escape_string($conn, $_POST['email']);
+        $new_user_infos_password =  $_POST['password'];
 
         $user_infos_changes = mysqli_query(
             $conn,

@@ -1,6 +1,6 @@
-<?php session_start();
+<?php
+session_start();
 include 'databaseConnection.php';
-include 'getPersonalInfos.php';
 require "../phpFunctions/routing.php"; ?>
 
 <head>
@@ -39,7 +39,38 @@ require "../phpFunctions/routing.php"; ?>
     <?php
 
     if (isset($_POST['confirm-validation'])) {
-        go("reservations.php");
+        $myUsername = $_SESSION['session_username'];
+        $booking_room_no = $_SESSION['booking_room_no'];
+        $booking_special_request = $_SESSION['booking_special_request'];
+        $sql = "INSERT INTO reservation_requests (room_no, customer_username) VALUES ('$booking_room_no', '$myUsername')";
+
+        if ($conn->query($sql) === TRUE) {
+
+            $get_res_request_id = mysqli_query($conn, "SELECT id FROM reservation_requests WHERE room_no = $booking_room_no LIMIT 1");
+            $fetch_res_request_id = $get_res_request_id->fetch_all(1);
+            $res_request_id = $fetch_res_request_id[0]['id'];
+
+            $number_of_adults = $_SESSION['booking_adults'];
+            $number_of_children = $_SESSION['booking_children'];
+            $check_in_date = $_SESSION['booking_check_in_date'];
+            $check_out_date = $_SESSION['booking_check_out_date'];
+            echo $check_in_date . " ,  ". $check_out_date;
+            $total_price = $_SESSION['booking_total_price'];
+
+            $new_sql = "INSERT INTO reservation_request_details (reservation_request_id, number_of_adults, number_of_children, check_in_date,
+            check_out_date, total_price_TL, special_request, isAccepted) VALUES ('$res_request_id', '$number_of_adults', '$number_of_children',
+            '$check_in_date', '$check_out_date', '$total_price', '$booking_special_request', '0')";
+
+            if($conn->query($new_sql) === TRUE){
+                //   echo "New reservation request created successfully"; 
+                echo "<div class='text-center bg-success text-white'> Reservation request is created successfully. Hotel will activate it soon... </div>";
+                go("user-personal-infos.php",5);
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+
+
+        } 
     }
 
     ?>
@@ -118,7 +149,7 @@ require "../phpFunctions/routing.php"; ?>
                 <div class="user_card">
 
                     <div class="d-flex justify-content-center form_container">
-                        <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+                        <form action="" method="POST">
 
                             <div class="header text-center mb-3">
                                 <h1>Mazarin Bank</h1>

@@ -27,35 +27,9 @@ include 'listAvailableRooms.php' ?>
 
 <body>
 
-    <script>
-        function addEventListenersToButtons() {
 
-            var allButtons = document.getElementsByClassName('book-button');
-            
-            var rooms_main_content = document.getElementById('rooms-main-content');
 
-            rooms_main_content.addEventListener('click', run);
 
-            function run(e){
-                if(e.target.tagName = 'button'){
-                    console.log(e.target);
-                }
-            }
-
-        }
-    </script>
-
-    <?php
-
-    echo "
-    <script type=\"text/javascript\">
-    function bookSelectedRoom(){
-
-    }
-    </script>
-    ";
-
-    ?>
 
     <!--Navbar Start-->
 

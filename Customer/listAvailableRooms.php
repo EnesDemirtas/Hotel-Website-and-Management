@@ -32,15 +32,15 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
 
     $checkAvailableRooms = mysqli_query(
         $conn,
-        "SELECT r.room_no, r.room_type, rt.room_name
+        "SELECT r.room_no, r.room_type, rt.room_name, rt.room_price
          FROM rooms r
          INNER JOIN room_types rt
          ON rt.id = r.room_type
-         WHERE (isAvailable = 1) AND (rt.max_adult >= " . $adults . " AND rt.max_child >= " . $children . ") 
-
+         WHERE (isAvailable = 1) AND (rt.max_adult >= " . $adults . " AND rt.max_child >= " . $children . ")
+         
          UNION
 
-         SELECT r.room_no, r.room_type, r.isAvailable
+         SELECT r.room_no, r.room_type, rt.room_name, rt.room_price
          FROM rooms r
          INNER JOIN room_types rt
          ON rt.id = r.room_type
@@ -61,6 +61,17 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
         $room_no = $availableRooms[$x]['room_no'];
         $room_type = $availableRooms[$x]['room_type'];
         $room_name = $availableRooms[$x]['room_name'];
+        $room_price = $availableRooms[$x]['room_price'];
+
+        $date_checkin = date_create($search_check_in_date);
+        $date_checkout = date_create($search_check_out_date);
+
+
+        $total_days = date_diff($date_checkin, $date_checkout);
+        $total_days_int = $total_days->format("%a");
+        $total_price = $total_days_int * $room_price;
+
+
 
         echo "
         <script type=\"text/javascript\">
@@ -70,9 +81,13 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
 
             var room_no_ui = " . $room_no . ";
             var room_type_ui = " . $room_type . ";
+            var room_total_price_ui = " . $total_price . ";
 
+            var booking_adults_ui = " . $adults . ";
+            var booking_children_ui = " . $children . ";
 
-            
+            var booking_check_in_ui = " . $search_check_in_date . ";
+            var booking_check_out_ui = " . $search_check_out_date . ";
             
         </script>
         
@@ -86,14 +101,7 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
             ";
     }
 
-    echo "
-    <script type=\"text/javascript\">
 
-    addEventListenersToButtons();        
-        
-    </script>
-    
-    ";
 
 
 

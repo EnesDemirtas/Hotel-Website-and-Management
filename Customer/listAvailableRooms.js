@@ -18,9 +18,20 @@ var myRoom = `<div class="row room-${room_no_ui}" style="margin-bottom: 6rem">
     </div>
 
     <div class="main-content-button d-flex justify-content-end">
-        <a href="reservation.php">
-            <button class="${room_no_ui} btn btn-danger book-button">Book Now</button>
-        </a>
+
+        <h4 class="mx-5">Total Price: ${room_total_price_ui}</h4>
+
+        <form action="reservation.php" method="POST">
+            <input type="hidden" name="booking-room-no" value="${room_no_ui}">
+            <input type="hidden" name="booking-room-name" value="${room_name_ui}">
+            <input type="hidden" name="booking-room-type" value="${room_type_ui}">
+            <input type="hidden" name="booking-total-price" value="${room_total_price_ui}">
+            <input type="hidden" name="booking-adults" value="${booking_adults_ui}">
+            <input type="hidden" name="booking-children" value="${booking_children_ui}">
+            <input type="hidden" name="booking-check-in-date" value="${booking_check_in_ui}">
+            <input type="hidden" name="booking-check-out-date" value="${booking_check_out_ui}">
+            <input type="submit" name="book-button" value="Book Now" class="btn btn-danger book-button" id="${room_no_ui}">
+        </form> 
     </div>
 </div>
 </div>
