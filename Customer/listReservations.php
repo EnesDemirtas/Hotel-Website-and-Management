@@ -7,6 +7,7 @@ function listCurrentReservations($conn){
 
 
     $current_date = date('Y-m-d');
+    $session_username = $_SESSION['session_username'];
 
     $checkCurrentReservations = mysqli_query(
         $conn,
@@ -20,7 +21,7 @@ function listCurrentReservations($conn){
     ON rr.room_no = r.room_no 
     INNER JOIN room_types rt
     ON r.room_type = rt.id
-    WHERE  u.username = '" . $_SESSION['session_username'] . "' AND rrd.check_out_date >= '" . $current_date . "'
+    WHERE  u.username = '$session_username' AND rrd.check_out_date >= '$current_date' AND isActive = 1 
     ORDER BY check_in_date"
     
     );
@@ -66,6 +67,8 @@ function listCurrentReservations($conn){
             var number_of_adults_ui = " . $number_of_adults . ";
             var number_of_children_ui = " . $number_of_children . ";
 
+
+
             var check_in_date_ui_year = " .  $check_in_date_year . ";
             var check_in_date_ui_month = " .  $check_in_date_month . ";
             var check_in_date_ui_day = " .  $check_in_date_day . ";
@@ -73,6 +76,8 @@ function listCurrentReservations($conn){
             var check_out_date_ui_year = " .  $check_out_date_year . ";
             var check_out_date_ui_month = " .  $check_out_date_month . ";
             var check_out_date_ui_day = " .  $check_out_date_day . ";
+
+            
             
             
         </script>
@@ -94,6 +99,8 @@ function listPastReservations($conn){
     
     $current_date = date('Y-m-d');
 
+    $session_username = $_SESSION['session_username'];
+
     $checkPastReservations = mysqli_query(
         $conn,
         "SELECT rr.room_no, r.room_type, rt.room_name, rrd.number_of_adults, rrd.number_of_children, rrd.check_in_date, rrd.check_out_date 
@@ -106,7 +113,7 @@ function listPastReservations($conn){
     ON rr.room_no = r.room_no
     INNER JOIN room_types rt
     ON r.room_type = rt.id
-    WHERE  u.username = '" . $_SESSION['session_username'] . "' AND rrd.check_out_date < '" . $current_date . "'
+    WHERE  u.username = '$session_username' AND (rrd.check_out_date < '$current_date' OR (rrd.check_out_date >= '$current_date' AND isActive = 0)) 
     ORDER BY check_in_date"
     );
 

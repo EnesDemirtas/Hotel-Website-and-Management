@@ -73,6 +73,7 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
 
 
 
+
         echo "
         <script type=\"text/javascript\">
 
@@ -86,8 +87,9 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
             var booking_adults_ui = " . $adults . ";
             var booking_children_ui = " . $children . ";
 
-            var booking_check_in_ui = " . $search_check_in_date . ";
-            var booking_check_out_ui = " . $search_check_out_date . ";
+            var booking_check_in_ui = '" . $search_check_in_date . "';
+            
+            var booking_check_out_ui = '" . $search_check_out_date . "';
             
         </script>
         

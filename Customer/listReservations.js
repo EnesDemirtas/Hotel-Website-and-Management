@@ -23,9 +23,9 @@ var myElement = `<div class="row mt-5">
             <span class="ms-5" style="font-size: 14px; font-weight: 600">Number of Adults: ${number_of_adults_ui}</span>
             <span class="ms-5" style="font-size: 14px; font-weight: 600">Number of Children: ${number_of_children_ui}</span>
             </br></br>
-            <span class="m-5" style="font-size: 14px; font-weight: 600">Check-in Date: ${check_in_date_ui_day} ${check_in_date_ui_month}, ${check_in_date_ui_year}</span> 
+            <span class="m-5" style="font-size: 14px; font-weight: 600">Check-in Date: ${check_in_date_ui_month} ${check_in_date_ui_day}, ${check_in_date_ui_year}</span> 
             </br>
-            <span class="m-5" style="font-size: 14px; font-weight: 600">Check-out Date: ${check_out_date_ui_day} ${check_out_date_ui_month}, ${check_out_date_ui_year}</span> 
+            <span class="m-5" style="font-size: 14px; font-weight: 600">Check-out Date: ${check_out_date_ui_month} ${check_out_date_ui_day}, ${check_out_date_ui_year}</span> 
             <p class="m-5" style="font-size:14px; letter-spacing:.25px;">Lorem ipsum dolor sit amet
                 consectetur adipisicing elit.
                 Mollitia sit, adipisci sunt rerum
@@ -40,8 +40,17 @@ var myElement = `<div class="row mt-5">
 
 if (isCurrent) {
     myElement += `        <div class="buttons m-5">
-    <button class="btn btn-secondary me-5">Change Reservation Date</button>
-    <button class="btn btn-danger ms-5">Cancel Reservation</button>
+    <div class='row'>
+    <div class='col-6'>
+    <button type="button" class="btn btn-secondary">Change Reservation Date</button>
+    </div>
+    <div class='col-6'>
+    <form action="" method="POST" onsubmit="return confirmCancel()">
+    <input type="hidden" name="cancel-room-no" value="${room_no_ui}">
+    <input type="submit" class="btn btn-danger ms-5"  name="cancel-reservation" value="Cancel Reservation">
+    </form>
+    </div>
+    </div>
 </div>
 
 </div>

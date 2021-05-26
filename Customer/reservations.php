@@ -21,7 +21,14 @@ include 'listReservations.php' ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
+    <script>
+        function confirmCancel() {
+            if (confirm("Are you sure you want to cancel your reservation?"))
+                return true;
 
+            return false;
+        }
+    </script>
 
 
 
@@ -94,6 +101,25 @@ include 'listReservations.php' ?>
     </header>
     <!--Navbar End-->
 
+    <?php
+
+    if (isset($_POST['cancel-reservation'])) {
+
+
+        $cancel_room_no = $_POST['cancel-room-no'];
+        $session_username = $_SESSION['session_username'];
+
+        $new_sql = "UPDATE reservation_records SET isActive = 0 WHERE customer_username = '$session_username' and room_no = '$cancel_room_no'";
+
+        if ($conn->query($new_sql) === TRUE) {
+            echo "<div class='text-center bg-success text-white'> The reservation has been cancelled/finished successfully... </div>";
+        } else {
+            echo "Error: " . $new_sql . "<br>" . $conn->error;
+        }
+    }
+
+    ?>
+
 
     <!--Reservations Start-->
 
@@ -122,7 +148,7 @@ include 'listReservations.php' ?>
 
                 </div>
                 <div class="col-3">
-                    <a href="reservation.php">
+                    <a href="rooms-suites.php">
                         <button class="btn btn-success ms-5">New Reservation</button>
                     </a>
                 </div>
@@ -160,11 +186,15 @@ include 'listReservations.php' ?>
 
                     </div>
                 </div> -->
+
+                
             </section>
             <?php
-            
+
             listCurrentReservations($conn);
             ?>
+
+
 
 
             <hr class="my-5" style="width:100%; height: 3px; color: #000">
@@ -208,9 +238,11 @@ include 'listReservations.php' ?>
 
             </section>
             <?php
-            
+
             listPastReservations($conn);
             ?>
+
+
 
 
 
@@ -219,6 +251,8 @@ include 'listReservations.php' ?>
 
 
     <!--Reservations End-->
+
+
 
 
 
