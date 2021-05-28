@@ -120,6 +120,47 @@ include 'listReservations.php' ?>
 
     ?>
 
+    <?php
+
+    if (isset($_POST['request-message'])) {
+
+        $username_session = $_SESSION['session_username'];
+        $message_room_no = $_POST['message-room-no'];
+        $current_datetime = date('Y-m-d H:i:s');
+        $request_message = $_POST['message'];
+
+
+        $request_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message) 
+        VALUES('$username_session', '$message_room_no', 'request', '$current_datetime', '$request_message')";
+
+        if ($conn->query($request_sql) === TRUE) {
+            echo "<div class='text-center bg-success text-white'> Your message has been sent to the hotel management successfully. </div>";
+        } else {
+            echo "Error: " . $request_sql . "<br>" . $conn->error;
+        }
+    }
+
+
+    if (isset($_POST['feedback-message'])) {
+
+        $username_session = $_SESSION['session_username'];
+        $feedback_message_room_no = $_POST['feedback-message-room-no'];
+        $current_datetime = date('Y-m-d H:i:s');
+        $feedback_message = $_POST['feedbackmessage'];
+
+
+        $feedback_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message) 
+        VALUES('$username_session', '$feedback_message_room_no', 'feedback', '$current_datetime', '$feedback_message')";
+
+        if ($conn->query($feedback_sql) === TRUE) {
+            echo "<div class='text-center bg-success text-white'> Your feedback has been sent to the hotel management successfully. </div>";
+        } else {
+            echo "Error: " . $feedback_sql . "<br>" . $conn->error;
+        }
+    }
+
+    ?>
+
 
     <!--Reservations Start-->
 
@@ -187,7 +228,7 @@ include 'listReservations.php' ?>
                     </div>
                 </div> -->
 
-                
+
             </section>
             <?php
 

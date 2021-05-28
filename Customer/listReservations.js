@@ -42,7 +42,37 @@ if (isCurrent) {
     myElement += `        <div class="buttons m-5">
     <div class='row'>
     <div class='col-6'>
-    <button type="button" class="btn btn-secondary">Change Reservation Date</button>
+
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#request-message">
+        Send Us A Message
+    </button>
+
+    <div class="modal fade" id="request-message" tabindex="-1" aria-labelledby="request-message-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="request-message-title">Send Us a Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="message" style="font-size:14px; font-weight:600;">Message</label>
+                        </div>
+                    </div>
+                    <textarea name="message" id="request_message" cols="70" rows="10" style="resize: none;" placeholder="Write your message here..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" name="message-room-no" value="${room_no_ui}">
+                    <input type="submit"  class="btn btn-primary" name="request-message" value="Send Your Message">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     </div>
     <div class='col-6'>
     <form action="" method="POST" onsubmit="return confirmCancel()">
@@ -59,10 +89,38 @@ if (isCurrent) {
     current_reservations.innerHTML += myElement;
 
 } else {
-    myElement += `        <div class="buttons m-5">
-    <button class="btn btn-primary me-5">Let us know your review</button>
+    myElement += `<div class="buttons m-5">
+                    <button type="button" class="btn btn-primary me-5" data-bs-toggle="modal" data-bs-target="#feedback-message">
+                        Let us know your review
+                    </button>
+
+                    <div class="modal fade" id="feedback-message" tabindex="-1" aria-labelledby="feedback-message-title" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="feedback-message-title">Send Us a Feedback</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="" method="POST">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="feedbackmessage" style="font-size:14px; font-weight:600;">Message</label>
+                                    </div>
+                                </div>
+                                <textarea name="feedbackmessage" id="feedbackmessage" cols="70" rows="10" style="resize: none;" placeholder="Write your message here..."></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="hidden" name="feedback-message-room-no" value="${room_no_ui}">
+                                <input type="submit"  class="btn btn-primary" name="feedback-message" value="Send Your Message">
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
     
-</div>
+                    </div>
 
 </div>
 </div>`;
