@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'databaseConnection.php';
+include '../phpFunctions/databaseConnection.php';
 require "../phpFunctions/routing.php"; ?>
 
 <head>

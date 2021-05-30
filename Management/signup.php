@@ -1,3 +1,8 @@
+<?php
+session_start();
+include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/routing.php';
+?>
 <!DOCTYPE php>
 <html lang="en">
 
@@ -27,6 +32,8 @@
 
     <?php
     if (isset($_POST['signup-submit'])) {
+        $my_staff_type_id = $_POST['staff-type'];
+        echo $my_staff_type_id;
         $username = $_POST['signup-username'];
         $password = $_POST['signup-password'];
         $password2 = $_POST['signup-password2'];
@@ -36,38 +43,32 @@
 
 
 
-
-        $servername = "localhost";
-        $username_con = "root";
-        $password_con = "";
-        $dbname = "hms";
-
-        // Create connection
-        $conn = new mysqli($servername, $username_con, $password_con, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+            echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
         } else {
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Invalid email format";
-                echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
+            if ($password != $password2) {
+                echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
             } else {
-                if ($password != $password2) {
-                    echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
+                $sql = "INSERT INTO staffs (staff_type, username, password, name, phone_number, email) 
+                VALUES ('$my_staff_type_id', '$username', '$password', '$name', '$phone_number', '$email')";
+                if ($conn->query($sql) === TRUE) {
+                    //   echo "New record created successfully"; 
+                    go('login.php');
                 } else {
-                    $sql = "INSERT INTO staffs (username, password, name, phone_number, email) 
-                VALUES ('$username', '$password', '$name', '$phone_number', '$email')";
-                    if ($conn->query($sql) === TRUE) {
-                        //   echo "New record created successfully"; 
-                        header("Location:login.php");
-                    } else {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
-                    }
-                    $conn->close();
+                    echo "Error: " . $sql . "<br>" . $conn->error;
                 }
             }
         }
     };
+    ?>
+    <?php
+
+    $staff_types_sql = mysqli_query($conn, "SELECT * FROM staff_types");
+    $staff_types = $staff_types_sql->fetch_all(1);
+
+
+
     ?>
     <div class="container h-100" style="position:fixed; top: 25%;">
 
@@ -122,6 +123,14 @@
                             </div>
                             <input type="password" name="signup-password2" class="form-control input_pass" value="" placeholder="Confirm Password">
                         </div>
+                        <div class="input-group mb-2">
+
+                            <label for="staff-type">Choose a staff type</label>
+                            <select name="staff-type" id="staff-type">
+                                <!-- <option value='${staff_type_id_ui}'>${staff_type_ui}</option> -->
+                            </select>
+
+                        </div>
 
 
                         <div class="d-flex justify-content-center mt-3 login_container">
@@ -142,6 +151,30 @@
         </div>
     </div>
     <!-- </section> -->
+
+    <?php
+
+    for ($x = 0; $x < sizeof($staff_types); $x++) {
+        $staff_type = $staff_types[$x]['staff_type'];
+        $staff_type_id = $staff_types[$x]['staff_type_id'];
+
+        echo "
+        <script type=\"text/javascript\">
+
+
+        var staff_type_ui = '" . $staff_type .  "';
+        var staff_type_id_ui = '" . $staff_type_id .  "';
+
+    </script>
+        ";
+
+        echo "
+        <script type=\"text/javascript\" src=\"getStaffTypes.js\">
+        </script> 
+        ";
+    }
+
+    ?>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">

@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include '../phpFunctions/databaseConnection.php';
+?>
 <!DOCTYPE php>
 <html lang="en">
 
@@ -55,6 +58,15 @@
     </div>
     <!--Navbar End-->
 
+    <?php
+    $get_rooms_sql = mysqli_query($conn, "SELECT r.room_no, r.room_type, rt.room_name, r.isAvailable, r.isFull, r.customer_id, 
+    u.name AS customer_name, r.cleaner_id, s.name AS staff_name FROM rooms r 
+    LEFT JOIN room_types rt ON r.room_type = rt.id
+    LEFT JOIN users u ON r.customer_id = u.id
+    LEFT JOIN staffs s ON r.cleaner_id = s.id");
+    $all_rooms = $get_rooms_sql->fetch_all(1);
+    ?>
+
 
     <!--Sidebar and Main Content Start-->
 
@@ -68,80 +80,8 @@
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
-        <div class="main">
-            <div class="row">
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 1</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 2</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 3</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 4</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 5</div>
-            </div>
+        <div class="main" id="rooms">
 
-            <div class="row">
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 6</div>
-                <div class="col-md-2 myRooms" style="background-color: #198754cc; height: 8rem;">Room 7</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(145, 124, 57, 0.856); height: 8rem;">Room 8</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 9</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 10</div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 11</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 12</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(145, 124, 57, 0.856); height: 8rem;">Room 13</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 14</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 15</div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 16</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 17</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(145, 124, 57, 0.856); height: 8rem;">Room 18</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(241, 23, 23, 0.800); height: 8rem;">Room 19</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 20</div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2 myRooms" style="background-color: #198754cc; height: 8rem;">Room 21</div>
-                <div class="col-md-2 myRooms" style="background-color: #198754cc; height: 8rem;">Room 22</div>
-                <div class="col-md-2 myRooms" style="background-color: #198754cc; height: 8rem;">Room 23</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(145, 124, 57, 0.856); height: 8rem;">Room 24</div>
-                <div class="col-md-2 myRooms" style="background-color: rgba(253, 215, 0, 0.800); height: 8rem;">Room 25</div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2 border border-dark" style="background-color: #198754cc; height: 1rem; width:auto; margin-top: 4rem;">
-                </div>
-
-                <div class="col-md-2 text-center" style="margin-top: 3.5rem; font-weight:500; letter-spacing:1px">
-                    <span>Available Rooms</span>
-                </div>
-
-                <div class="col-md-2 border border-dark" style="background-color: rgba(253, 215, 0, 0.800); height: 1rem; width:auto; margin-top: 4rem;">
-                </div>
-
-                <div class="col-md-2 text-center" style="margin-top: 3.5rem; font-weight:500; letter-spacing:1px">
-                    <span>Reserved Rooms</span>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-2 border border-dark" style="background-color: rgba(241, 23, 23, 0.800); height: 1rem; width:auto; margin-top: 4rem;">
-                </div>
-
-                <div class="col-md-2 text-center" style="margin-top: 3.5rem; font-weight:500; letter-spacing:1px">
-                    <span>Unavailable Rooms</span>
-                </div>
-
-                <div class="col-md-2 border border-dark" style="background-color: rgba(145, 124, 57, 0.856); height: 1rem; width:auto; margin-top: 4rem;">
-                </div>
-
-                <div class="col-md-3 text-center" style="margin-top: 3.5rem; font-weight:500; letter-spacing:1px">
-                    <span>Rooms that need to be cleaned</span>
-                </div>
-
-            </div>
 
 
 
@@ -149,6 +89,57 @@
     </div>
 
     <!--Sidebar and Main Content End-->
+
+    <?php
+
+    for ($x = 0, $counter = 1; $x < sizeof($all_rooms); $x++, $counter++) {
+        $room_no = $all_rooms[$x]['room_no'];
+        $room_name = $all_rooms[$x]['room_name'];
+        $is_available = $all_rooms[$x]['isAvailable'];
+        $is_full = $all_rooms[$x]['isFull'];
+        
+        $customer_id = $all_rooms[$x]['customer_id'];
+        $customer_name = $all_rooms[$x]['customer_name'];
+        if($customer_id === NULL){
+            $customer_id = 'im null';
+            $customer_name = 'im null';
+        }
+        
+        
+        $cleaner_id = $all_rooms[$x]['cleaner_id'];
+        $cleaner_name = $all_rooms[$x]['staff_name'];
+
+        echo "
+        <script type=\"text/javascript\">
+
+
+        var room_no_ui = '" . $room_no .  "';
+        var room_name_ui = '" . $room_name .  "';
+        var is_available_ui = '". $is_available . "';
+        var is_full_ui = '". $is_full . "';
+        var cleaner_id_ui = '". $cleaner_id . "';
+        var cleaner_name_ui = '". $cleaner_name . "';
+        
+        var customer_id_ui = '". $customer_id . "';
+        var customer_name_ui = '". $customer_name . "';
+
+        var counter = '". $counter. "';
+        </script>
+        ";
+
+        echo "
+        <script type=\"text/javascript\" src=\"getRooms.js\">
+        </script> 
+        ";
+        
+    }
+
+    echo "
+    <script type=\"text/javascript\" src=\"roomsLegend.js\">
+    </script>
+    ";
+
+    ?>
 
 
 

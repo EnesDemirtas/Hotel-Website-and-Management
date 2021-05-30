@@ -1,4 +1,4 @@
-<?php include 'databaseConnection.php'; 
+<?php include '../phpFunctions/databaseConnection.php'; 
 
 function getPersonalInfos($conn){
     $personal_infos = mysqli_query($conn,

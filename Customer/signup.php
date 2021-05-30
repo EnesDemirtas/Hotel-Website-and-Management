@@ -83,17 +83,7 @@
 
 
 
-        $servername = "localhost";
-        $username_con = "root";
-        $password_con = "";
-        $dbname = "hms";
 
-        // Create connection
-        $conn = new mysqli($servername, $username_con, $password_con, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $emailErr = "Invalid email format";
                 echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
@@ -109,10 +99,10 @@
                     } else {
                         echo "Error: " . $sql . "<br>" . $conn->error;
                     }
-                    $conn->close();
+                    
                 }
             }
-        }
+        
     };
 
 

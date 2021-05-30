@@ -1,5 +1,5 @@
 <?php session_start();
-include 'databaseConnection.php';
+include '../phpFunctions/databaseConnection.php';
 include 'listAvailableRooms.php' ?>
 <!DOCTYPE html>
 <html lang="en">

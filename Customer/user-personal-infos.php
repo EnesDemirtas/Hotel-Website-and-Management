@@ -1,5 +1,5 @@
 <?php session_start();
-include 'databaseConnection.php';
+include '../phpFunctions/databaseConnection.php';
 include 'getPersonalInfos.php';
 require "../phpFunctions/routing.php"; ?>
 <!DOCTYPE html>

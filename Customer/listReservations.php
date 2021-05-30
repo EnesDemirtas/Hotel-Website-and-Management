@@ -1,4 +1,4 @@
-<?php include 'databaseConnection.php'; ?>
+<?php include '../phpFunctions/databaseConnection.php';?>
 
 <?php 
 

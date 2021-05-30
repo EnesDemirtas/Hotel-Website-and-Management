@@ -1,5 +1,5 @@
 <?php 
-include 'databaseConnection.php';
+include '../phpFunctions/databaseConnection.php';
 require "../phpFunctions/routing.php";
 ?>
 

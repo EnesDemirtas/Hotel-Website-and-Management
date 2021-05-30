@@ -1,4 +1,4 @@
-<?php session_start(); include 'databaseConnection.php'; ?>
+<?php session_start(); include '../phpFunctions/databaseConnection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 

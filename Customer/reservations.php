@@ -1,5 +1,5 @@
 <?php session_start();
-include 'databaseConnection.php';
+include '../phpFunctions/databaseConnection.php';
 include 'listReservations.php' ?>
 <!DOCTYPE html>
 <html lang="en">
