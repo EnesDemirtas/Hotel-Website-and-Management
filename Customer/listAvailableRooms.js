@@ -1,4 +1,71 @@
-var available_rooms = document.getElementById("rooms-main-content");
+function toggler (divId) {
+    $("#" + divId).toggle(400);
+}
+
+switch(room_type_ui){
+    case 1:
+        if(num_of_standard_ui == 1){
+            var standard_rooms_btn_div = `
+            <section id='main-content' class='mt-5'>
+            <div class='row d-flex justify-content-center mb-5'>
+                <div class='col-3'>
+                    <button type='button' class='btn btn-primary' onclick=\"javascript:toggler('standard-rooms');\">Show Standard Rooms</button>
+                </div>
+            </div>
+            <div class='container' id='standard-rooms' style='display:none;'></div>
+            `;
+            document.getElementById("main-content").innerHTML += standard_rooms_btn_div;
+        }
+        var standard_rooms = document.getElementById('standard-rooms');
+        break;
+    
+    case 2:
+        if(num_of_platinum_ui == 1){
+            var platinum_rooms_btn_div = `
+            <div class='row d-flex justify-content-center mb-5'>
+            <div class='col-3'>
+                <button type='button' class='btn btn-primary' onclick=\"javascript:toggler('platinum-rooms');\">Show Platinum Rooms</button>
+            </div>
+            </div>
+            <div class='container' id='platinum-rooms' style='display:none;'></div>
+            `;
+            document.getElementById("main-content").innerHTML += platinum_rooms_btn_div;
+        }
+        var platinum_rooms = document.getElementById("platinum-rooms");
+        break;
+
+    case 3:
+        if(num_of_exclusive_ui == 1){
+            var exclusive_rooms_btn_div = `
+            <div class='row d-flex justify-content-center mb-5'>
+            <div class='col-3'>
+                <button type='button' class='btn btn-primary' onclick=\"javascript:toggler('exclusive-rooms');\">Show Exclusive Rooms</button>
+            </div>
+            </div>
+            <div class='container' id='exclusive-rooms' style='display:none;'></div>
+            `;
+            document.getElementById("main-content").innerHTML += exclusive_rooms_btn_div;
+        }
+        var exclusive_rooms = document.getElementById("exclusive-rooms");
+        break;
+
+    case 4:
+        if(num_of_kingsuite_ui == 1){
+            var kingsuites_btn_div = `
+            <div class='row d-flex justify-content-center mb-5'>
+            <div class='col-3'>
+                <button type='button' class='btn btn-primary' onclick=\"javascript:toggler('kingsuites');\">Show King Suites</button>
+            </div>
+            </div>
+            <div class='container' id='kingsuites' style='display:none;'></div>
+            `;
+            document.getElementById("main-content").innerHTML += kingsuites_btn_div;
+        }
+        var kingsuites = document.getElementById("kingsuites");
+        break;
+}
+
+
 
 var myRoom = `<div class="row room-${room_no_ui}" style="margin-bottom: 6rem">
 <div class="col-md-4">
@@ -40,4 +107,17 @@ var myRoom = `<div class="row room-${room_no_ui}" style="margin-bottom: 6rem">
 
 `;
 
-available_rooms.innerHTML += myRoom;
+switch(room_type_ui) {
+    case 1:
+        standard_rooms.innerHTML += myRoom;
+        break;
+    case 2: 
+        platinum_rooms.innerHTML += myRoom;
+        break;
+    case 3:
+        exclusive_rooms.innerHTML += myRoom;
+        break;
+    case 4:
+        kingsuites.innerHTML += myRoom;
+        break;
+}

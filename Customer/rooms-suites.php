@@ -118,16 +118,13 @@ include 'listAvailableRooms.php' ?>
 
 
 
+
+
     <?php
-
-
-
 
 
     $current_date = date('Y-m-d');
     $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));
-
-
 
     // if(isset($_POST['list-available-rooms'])){
     //     $user_check_in_date = $_POST['checkin-room-searching'];
@@ -213,17 +210,24 @@ include 'listAvailableRooms.php' ?>
 
 
 
+    <script type=\"text/javascript\">
+    function toggler (divId) {
+        $(\"#\" + divId).toggle(400);
+    }
+    </script>
 
-    <section id='main-content'>
-    <div class='container' id='rooms-main-content' style='margin-top: 6rem'>
+
+    <section id='main-content' class='mt-5'>
 
 
-
-    </div>
     </section>
 
     
     ";
+
+    ?>
+
+    <?php
 
     if (isset($_POST['list-available-rooms'])) {
         $user_check_in_date = $_POST['checkin-room-searching'];
@@ -235,7 +239,10 @@ include 'listAvailableRooms.php' ?>
     } else {
         listAvailableRooms($conn, $current_date, $tomorrow_date, 1, 1);
     }
+
     ?>
+
+
 
 
 
@@ -345,6 +352,8 @@ include 'listAvailableRooms.php' ?>
     </footer>
 
     <!--Footer End-->
+
+
 
 
 

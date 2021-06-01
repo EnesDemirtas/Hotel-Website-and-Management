@@ -36,7 +36,7 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
          FROM rooms r
          INNER JOIN room_types rt
          ON rt.id = r.room_type
-         WHERE (isAvailable = 1) AND (rt.max_adult >= " . $adults . " AND rt.max_child >= " . $children . ")
+         WHERE (isAvailable = 1) AND (rt.max_adult >= '$adults' AND rt.max_child >= '$children')
          
          UNION
 
@@ -49,13 +49,17 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
          INNER JOIN reservation_record_details rrd
          ON rrd.reservation_record_id = rr.id
          WHERE (r.isAvailable = 0 OR r.isAvailable IS NULL) 
-         AND (rrd.check_in_date > '" . $search_check_out_date . "' OR rrd.check_out_date < '" . $search_check_in_date . "')
-         AND rt.max_adult >='" . $adults . "' AND rt.max_child >= '" . $children . "'
+         AND (rrd.check_in_date > '$search_check_out_date' OR rrd.check_out_date < '$search_check_in_date')
+         AND rt.max_adult >= '$adults' AND rt.max_child >= '$children'
+
+         ORDER BY room_type, room_no
+
         "    
         );
 
     $availableRooms = $checkAvailableRooms->fetch_all(1);
 
+    $num_of_standard = $num_of_platinum = $num_of_exclusive = $num_of_kingsuite = 0; 
     for($x = 0; $x < sizeof($availableRooms); $x++){
 
         $room_no = $availableRooms[$x]['room_no'];
@@ -71,6 +75,20 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
         $total_days_int = $total_days->format("%a");
         $total_price = $total_days_int * $room_price;
 
+        switch($room_type){
+            case 1:
+                $num_of_standard++;
+                break;
+            case 2:
+                $num_of_platinum++;
+                break;
+            case 3:
+                $num_of_exclusive++;
+                break;
+            case 4:
+                $num_of_kingsuite++;
+                break;
+        }
 
 
 
@@ -90,6 +108,11 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
             var booking_check_in_ui = '" . $search_check_in_date . "';
             
             var booking_check_out_ui = '" . $search_check_out_date . "';
+
+            var num_of_standard_ui = ". $num_of_standard . ";
+            var num_of_platinum_ui = ". $num_of_platinum . ";
+            var num_of_exclusive_ui = ". $num_of_exclusive . ";
+            var num_of_kingsuite_ui = ". $num_of_kingsuite . ";
             
         </script>
         

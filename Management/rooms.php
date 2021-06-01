@@ -60,7 +60,8 @@ include '../phpFunctions/databaseConnection.php';
 
     <?php
     $get_rooms_sql = mysqli_query($conn, "SELECT r.room_no, r.room_type, rt.room_name, r.isAvailable, r.isFull, r.customer_id, 
-    u.name AS customer_name, r.cleaner_id, s.name AS staff_name FROM rooms r 
+    u.name AS customer_name, r.cleaner_id, s.name AS staff_name 
+    FROM rooms r 
     LEFT JOIN room_types rt ON r.room_type = rt.id
     LEFT JOIN users u ON r.customer_id = u.id
     LEFT JOIN staffs s ON r.cleaner_id = s.id");
@@ -109,6 +110,50 @@ include '../phpFunctions/databaseConnection.php';
         $cleaner_id = $all_rooms[$x]['cleaner_id'];
         $cleaner_name = $all_rooms[$x]['staff_name'];
 
+        $current_date = date('Y-m-d');
+
+        if($is_available == 0 AND $is_full == 1){
+            $details_sql = mysqli_query($conn, "SELECT r.room_no, rrd.check_in_date, rrd.check_out_date, rrd.number_of_adults, 
+            rrd.number_of_children 
+            FROM rooms r 
+            INNER JOIN reservation_records rr ON rr.room_no = r.room_no 
+            INNER JOIN reservation_record_details rrd ON rrd.reservation_record_id = rr.id
+            WHERE rr.isActive = 1 AND rr.room_no = $room_no");
+
+            $details = $details_sql->fetch_all(1);
+
+            if(sizeof($details) != 0){
+                $check_in_date = $details[0]['check_in_date'];
+                $check_out_date = $details[0]['check_out_date'];
+                $number_of_adults = $details[0]['number_of_adults'];
+                $number_of_children = $details[0]['number_of_children'];
+
+                echo "
+                <script type=\"text/javascript\">
+                    var check_in_date_ui = '". $check_in_date . "';
+                    var check_out_date_ui = '". $check_out_date . "';
+                    var number_of_adults_ui = '". $number_of_adults . "';
+                    var number_of_children_ui = '". $number_of_children . "';
+                </script>
+                ";
+
+                if($details[0]['check_in_date'] <= $current_date){
+                    echo "
+                    <script type=\"text/javascript\">
+                        var liveReservation = 1;
+                    </script>
+                    ";
+                }else {
+                    echo "
+                    <script type=\"text/javascript\">
+                        var liveReservation = 0;
+                    </script>
+                    ";
+                }
+            }
+            
+        }
+
         echo "
         <script type=\"text/javascript\">
 
@@ -122,6 +167,8 @@ include '../phpFunctions/databaseConnection.php';
         
         var customer_id_ui = '". $customer_id . "';
         var customer_name_ui = '". $customer_name . "';
+
+
 
         var counter = '". $counter. "';
         </script>
