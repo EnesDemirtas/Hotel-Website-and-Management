@@ -117,7 +117,7 @@ include '../phpFunctions/databaseConnection.php';
             rrd.number_of_children 
             FROM rooms r 
             INNER JOIN reservation_records rr ON rr.room_no = r.room_no 
-            INNER JOIN reservation_record_details rrd ON rrd.reservation_record_id = rr.id
+            INNER JOIN reservation_record_details rrd ON rrd.reservation_id = rr.id
             WHERE rr.isActive = 1 AND rr.room_no = $room_no");
 
             $details = $details_sql->fetch_all(1);

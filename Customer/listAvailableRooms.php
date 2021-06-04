@@ -47,7 +47,7 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
          INNER JOIN reservation_records rr
          ON rr.room_no = r.room_no
          INNER JOIN reservation_record_details rrd
-         ON rrd.reservation_record_id = rr.id
+         ON rrd.reservation_id = rr.id
          WHERE (r.isAvailable = 0 OR r.isAvailable IS NULL) 
          AND (rrd.check_in_date > '$search_check_out_date' OR rrd.check_out_date < '$search_check_in_date')
          AND rt.max_adult >= '$adults' AND rt.max_child >= '$children'

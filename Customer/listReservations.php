@@ -16,7 +16,7 @@ function listCurrentReservations($conn){
     INNER JOIN users u 
     ON rr.customer_username = u.username
     INNER JOIN reservation_record_details rrd
-    ON rr.id = rrd.reservation_record_id
+    ON rr.id = rrd.reservation_id
     INNER JOIN rooms r
     ON rr.room_no = r.room_no 
     INNER JOIN room_types rt
@@ -108,7 +108,7 @@ function listPastReservations($conn){
     INNER JOIN users u 
     ON rr.customer_username = u.username
     INNER JOIN reservation_record_details rrd
-    ON rr.id = rrd.reservation_record_id
+    ON rr.id = rrd.reservation_id
     INNER JOIN rooms r
     ON rr.room_no = r.room_no
     INNER JOIN room_types rt

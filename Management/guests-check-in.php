@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/routing.php';
+?>
 <!DOCTYPE php>
 <html lang="en">
 
@@ -10,13 +14,10 @@
     <meta name="description" content="Hotel Mazarin">
 
     <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
     <!--Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,7 +41,7 @@
 
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
-                    <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
@@ -70,9 +71,84 @@
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
+        <?php
+
+        if (isset($_POST['guest-check-in'])) {
+            $guest_name = $_POST['guest-name'];
+            $check_in_date = $_POST['check-in-date'];
+            $check_out_date = $_POST['check-out-date'];
+            $room_number = $_POST['room-number'];
+            $num_of_adults = $_POST['adults'];
+            $num_of_children = $_POST['children'];
+            $total_price = $_POST['total-price'];
+            $special_request = $_POST['special-request'];
+
+            echo $guest_name . " ~~ ";
+            echo $check_in_date . " ~~ ";
+            echo $check_out_date . " ~~ ";
+            echo $room_number . " ~~ ";
+            echo $num_of_adults . " ~~ ";
+            echo $num_of_children . " ~~ ";
+            echo $total_price . " ~~ ";
+            echo $special_request . " ~~ ";
+
+            if (empty($guest_name)) {
+                echo "<div class='text-center bg-danger text-white'> Please provide all inputs correctly... </div>";
+            } else {
+                $new_guest_sql = "INSERT INTO users (username, password, name) 
+                VALUES ('guest-$guest_name', '', '$guest_name')";
+
+                if ($conn->query($new_guest_sql) === TRUE) {
+                    $sql = "INSERT INTO reservation_records (customer_username, room_no, isActive) 
+                    VALUES ('guest-$guest_name', '$room_number', 1)";
+
+                    if($conn->query($sql) === TRUE){
+                        $get_res_request_id = mysqli_query($conn, "SELECT id FROM reservation_records WHERE room_no = $room_number ORDER BY id DESC LIMIT 1");
+                        $fetch_res_request_id = $get_res_request_id->fetch_all(1);
+                        $res_request_id = $fetch_res_request_id[0]['id'];
+
+                        $guest_reservation = "INSERT INTO reservation_record_details (reservation_id, check_in_date, check_out_date, number_of_adults, 
+                        number_of_children, total_price_TL, special_request) VALUES ('$res_request_id', '$check_in_date', '$check_out_date', 
+                        '$num_of_adults', '$num_of_children', '$total_price', '$special_request')";
+
+                        if($conn->query($guest_reservation) === TRUE){
+                            $get_customer_id = mysqli_query($conn, "SELECT id FROM users WHERE username = 'guest-$guest_name'");
+                            $fetch_customer_id = $get_customer_id->fetch_all(1);
+                            $customer_id = $fetch_customer_id[0]['id'];
+
+                            $change_room_status = "UPDATE rooms SET isAvailable = 0, isFull = 1, customer_id = '$customer_id' 
+                            WHERE room_no = $room_number ";
+
+                            if($conn->query($change_room_status) === TRUE){
+                                echo "<div class='text-center bg-success text-white'> New reservation is created successfully. You are redirected to main page... </div>";
+                                go("rooms.php",5);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ?>
+
+        <?php
+
+
+        echo "
+<script type=\"text/javascript\" src=\"myCalc.js\">
+</script> 
+";
+
+        ?>
+
+        <?php
+        $current_date = date('Y-m-d');
+        $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));
+        ?>
+
         <div class="main">
             <div class="row">
-                <form class="col-8 my-4">
+                <form class="col-8 my-4" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
                     <div class="row form-row mb-4">
                         <div class="col-md-4">
                             <label for="guest-name">Guest Name</label>
@@ -81,12 +157,12 @@
 
                         <div class="col-md-4">
                             <label for="check-in-date">Check In Date</label>
-                            <input type="date" name="check-in-date" id="check-in-date" class="form-control">
+                            <input type="date" name="check-in-date" id="check-in-date" class="form-control" onchange="javascript:update_total_price();" value="<?php echo $current_date ?>">
                         </div>
 
                         <div class="col-md-4">
                             <label for="check-out-date">Check Out Date</label>
-                            <input type="date" name="check-out-date" id="check-out-date" class="form-control">
+                            <input type="date" name="check-out-date" id="check-out-date" class="form-control" onchange="javascript:update_total_price();" value="<?php echo $tomorrow_date ?>">
                         </div>
                     </div>
 
@@ -94,47 +170,43 @@
                     <div class="row form-row mb-4">
                         <div class="col-md-4">
                             <label for="room-number">Room Number</label>
-                            <input type="number" name="room-number" id="room-number" class="form-control">
+                            <select name="room-number" id="room-number" onchange="update_total_price()" class="form-control">
+                            </select>
                         </div>
 
                         <div class="col-md-4">
                             <label for="check-in-adults">Adults</label>
-                            <input type="number" name="adults" id="check-in-adults" class="form-control">
+                            <select name="adults" id="check-in-adults" class="form-control">
+                                <option value="1">1</option>
+                            </select>
                         </div>
 
                         <div class="col-md-4">
                             <label for="check-in-children">Children</label>
-                            <input type="number" name="children" id="check-in-children" class="form-control">
+                            <select name="children" id="check-in-children" class="form-control">
+                                <option value="1">1</option>
+                            </select>
                         </div>
                     </div>
 
 
                     <div class="row form-row mb-4">
-                        <div class="col-md-4">
-                            <label for="gender">Gender</label>
-                            <select name="gender" id="gender" class="form-control">
-                                <option value="male" selected>Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
+                        <div class="col-md-8">
+                            <label for="special-request">Special Request <small style="color: red;">(Optional)</small></label>
+                            <textarea name="special-request" id="special-request" class="form-control border border-dark" style="resize: none;"></textarea>
                         </div>
-
-                        <div class="col-md-4">
-                            <label for="payment-info">Payment Info</label>
-                            <input type="text" name="payment-info" id="payment-info" class="form-control">
-                        </div>
-
                         <div class="col-md-4">
                             <label for="total-price">Total Price</label>
-                            <input type="number" name="total-price" id="total-price" class="form-control">
+                            <input type="number" name="total-price" id="total-price" class="form-control" readonly>
                         </div>
                     </div>
 
                     <div class="row form-row">
-                        <div class="col-md-9"></div>
+                        <div class="col-md-9">
+                        </div>
 
                         <div class="col-md-3">
-                            <button class="btn btn-primary w-100 h-100" style="font-size: 18px;">Check In</button>
+                            <input type="submit" class="btn btn-primary w-100 h-100" name="guest-check-in" style="font-size: 18px;" value="Check In">
                         </div>
                     </div>
 
@@ -143,6 +215,33 @@
         </div>
     </div>
 
+
+
+    <?php
+    $get_available_rooms = mysqli_query($conn, "SELECT r.room_no, rt.room_name FROM rooms r 
+        INNER JOIN room_types rt ON rt.id = r.room_type ORDER by room_no");
+    $available_rooms = $get_available_rooms->fetch_all(1);
+
+    for ($x = 0; $x < sizeof($available_rooms); $x++) {
+        $room_no = $available_rooms[$x]['room_no'];
+        $room_name = $available_rooms[$x]['room_name'];
+
+        echo "
+            <script type=\"text/javascript\">
+                var room_no_ui = '" . $room_no . "';
+                var room_name_ui = '" . $room_name . "';
+            </script>
+            ";
+
+
+        echo "
+            <script type=\"text/javascript\" src=\"listRoomsCheckIn.js\">
+            </script> 
+            ";
+    }
+    ?>
+
+
     <!--Sidebar and Main Content End-->
 
 
@@ -150,8 +249,9 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
 
     <script src="../app.js"></script>

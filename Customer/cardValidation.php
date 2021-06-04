@@ -42,11 +42,11 @@ require "../phpFunctions/routing.php"; ?>
         $myUsername = $_SESSION['session_username'];
         $booking_room_no = $_SESSION['booking_room_no'];
         $booking_special_request = $_SESSION['booking_special_request'];
-        $sql = "INSERT INTO reservation_requests (room_no, customer_username) VALUES ('$booking_room_no', '$myUsername')";
+        $sql = "INSERT INTO reservation_records (customer_username, room_no, isActive) VALUES ('$myUsername', '$booking_room_no', 1)";
 
         if ($conn->query($sql) === TRUE) {
 
-            $get_res_request_id = mysqli_query($conn, "SELECT id FROM reservation_requests WHERE room_no = $booking_room_no LIMIT 1");
+            $get_res_request_id = mysqli_query($conn, "SELECT id FROM reservation_records WHERE room_no = $booking_room_no ORDER BY id DESC LIMIT 1");
             $fetch_res_request_id = $get_res_request_id->fetch_all(1);
             $res_request_id = $fetch_res_request_id[0]['id'];
 
@@ -54,23 +54,33 @@ require "../phpFunctions/routing.php"; ?>
             $number_of_children = $_SESSION['booking_children'];
             $check_in_date = $_SESSION['booking_check_in_date'];
             $check_out_date = $_SESSION['booking_check_out_date'];
-            echo $check_in_date . " ,  ". $check_out_date;
             $total_price = $_SESSION['booking_total_price'];
 
-            $new_sql = "INSERT INTO reservation_request_details (reservation_request_id, number_of_adults, number_of_children, check_in_date,
-            check_out_date, total_price_TL, special_request, isAccepted) VALUES ('$res_request_id', '$number_of_adults', '$number_of_children',
-            '$check_in_date', '$check_out_date', '$total_price', '$booking_special_request', '0')";
+            $new_sql = "INSERT INTO reservation_record_details (reservation_id, check_in_date, check_out_date, number_of_adults, 
+            number_of_children, total_price_TL, special_request) VALUES ('$res_request_id', '$check_in_date', '$check_out_date', 
+            '$number_of_adults', '$number_of_children', '$total_price', '$booking_special_request')";
 
             if($conn->query($new_sql) === TRUE){
+                
+                $get_customer_id = mysqli_query($conn, "SELECT id FROM users WHERE username = '$myUsername'");
+                $fetch_customer_id = $get_customer_id->fetch_all(1);
+                $customer_id = $fetch_customer_id[0]['id'];
+
+                $change_room_status = "UPDATE rooms SET isAvailable = 0, isFull = 1, customer_id = '$customer_id' 
+                WHERE room_no = $booking_room_no ";
+
+                if($conn->query($change_room_status) === TRUE){
                 //   echo "New reservation request created successfully"; 
-                echo "<div class='text-center bg-success text-white'> Reservation request is created successfully. Hotel will activate it soon... </div>";
+                echo "<div class='text-center bg-success text-white'> Reservation is created successfully. You are redirected to the user profile page... </div>";
                 go("user-personal-infos.php",5);
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
-            }
+                }
+ 
+            } 
 
 
-        } 
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
 
     ?>

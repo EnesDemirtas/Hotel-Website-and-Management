@@ -120,7 +120,6 @@ require "../phpFunctions/routing.php";
         $_SESSION['booking_check_in_date'] = $_POST['booking-check-in-date'];
         $_SESSION['booking_check_out_date'] = $_POST['booking-check-out-date'];
 
-        echo $_SESSION['booking_check_in_date'] . " , ". $_SESSION['booking_check_out_date']; 
     }
 
     ?>
