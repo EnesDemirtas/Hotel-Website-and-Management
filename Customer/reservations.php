@@ -130,8 +130,8 @@ include 'listReservations.php' ?>
         $request_message = $_POST['message'];
 
 
-        $request_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message) 
-        VALUES('$username_session', '$message_room_no', 'request', '$current_datetime', '$request_message')";
+        $request_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message, isRead) 
+        VALUES('$username_session', '$message_room_no', 'request', '$current_datetime', '$request_message', 0)";
 
         if ($conn->query($request_sql) === TRUE) {
             echo "<div class='text-center bg-success text-white'> Your message has been sent to the hotel management successfully. </div>";
@@ -149,8 +149,8 @@ include 'listReservations.php' ?>
         $feedback_message = $_POST['feedbackmessage'];
 
 
-        $feedback_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message) 
-        VALUES('$username_session', '$feedback_message_room_no', 'feedback', '$current_datetime', '$feedback_message')";
+        $feedback_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message, isRead) 
+        VALUES('$username_session', '$feedback_message_room_no', 'feedback', '$current_datetime', '$feedback_message', 0)";
 
         if ($conn->query($feedback_sql) === TRUE) {
             echo "<div class='text-center bg-success text-white'> Your feedback has been sent to the hotel management successfully. </div>";

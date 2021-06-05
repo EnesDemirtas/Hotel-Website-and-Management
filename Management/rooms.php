@@ -77,7 +77,7 @@ include '../phpFunctions/databaseConnection.php';
             <a href="guests-check-in.php" style="padding-right: 0;">Guests Check In</a>
             <a href="guests-check-out.php" style="letter-spacing: -.25px; padding-right:0;">Guests Check Out</a>
             <a href="housekeeping.php">Housekeeping</a>
-            <a href="reservation.php">Reservation</a>
+            <a href="message-box.php">Message Box</a>
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
