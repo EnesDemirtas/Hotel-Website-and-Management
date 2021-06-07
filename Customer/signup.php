@@ -1,3 +1,9 @@
+<?php 
+session_start();
+include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/security.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,26 +79,28 @@
 
 
     if (isset($_POST['signup-submit'])) {
-        $username = $_POST['signup-username'];
+        $username = escape_sanitize_input($conn, $_POST['signup-username'], "string");
         $password = $_POST['signup-password'];
         $password2 = $_POST['signup-password2'];
-        $name = $_POST['signup-name'];
-        $phone_number = $_POST['signup-tel'];
-        $email = $_POST['signup-email'];
+        $name = escape_sanitize_input($conn, $_POST['signup-name'], "string");
+        $phone_number = escape_sanitize_input($conn, $_POST['signup-tel'], "string");
+        $email = escape_sanitize_input($conn, $_POST['signup-email'], "email");
 
 
 
 
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Invalid email format";
                 echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
             } else {
                 if ($password != $password2) {
                     echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
                 } else {
+
+                    $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
+
                     $sql = "INSERT INTO users (username, password, name, phone_number, email) 
-                VALUES ('$username', '$password', '$name', '$phone_number', '$email')";
+                VALUES ('$username', '$hashed_pw', '$name', '$phone_number', '$email')";
                     if ($conn->query($sql) === TRUE) {
                         //   echo "New record created successfully"; 
                         header("Location:login.php");

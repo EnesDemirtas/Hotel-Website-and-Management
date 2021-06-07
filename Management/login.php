@@ -2,6 +2,7 @@
 session_start();
 include '../phpFunctions/databaseConnection.php'; 
 include '../phpFunctions/routing.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -32,29 +33,30 @@ include '../phpFunctions/routing.php';
 
 
     if (isset($_POST['login_username'])) {
-        $username = $_POST['login_username'];
+        $username = escape_sanitize_input($conn, $_POST['login_username'], "string");
         $password = $_POST['login_password'];
 
         if ($username != '' and $password != '') {
 
-            $result1 = $conn->query("SELECT username, password FROM staffs WHERE username = '" . $username . "' AND  password = '" . $password . "'");
+            $get_hashed_pw_sql = mysqli_query($conn, "SELECT password FROM staffs WHERE username = '$username'");
+            $get_hashed_pw = $get_hashed_pw_sql->fetch_all(1);
 
-            if ($result1->num_rows > 0) {
-                $_SESSION["logged_in"] = true;
-                $_SESSION["username"] = $username;
+            if(sizeof($get_hashed_pw) > 0){
+                $hashed_pw = $get_hashed_pw[0]['password'];
 
-                $_SESSION["session_username"] = $username;
-
-                go('rooms.php');
-            } else {
+                if(password_verify($password, $hashed_pw)){
+                    $_SESSION["logged_in"] = true;
+                    $_SESSION["username"] = $username;
+    
+                    $_SESSION["session_username"] = $username;
+    
+                    go('rooms.php');
+                }else {
+                    echo "<div class='text-center bg-danger text-white'> Invalid username or/and password! </div>";
+                }
+            }else {
                 echo "<div class='text-center bg-danger text-white'> Invalid username or/and password! </div>";
             }
-            // if($username == 'admin' and $password == 'admin'){
-            //     header("Location:user-personal-infos.php?username=$username");
-            //     die();
-            // } else {
-            //     echo "<div class='text-center bg-danger text-white'> Invalid username or/and password! </div>";
-            // }
 
         } else {
             echo "<div class='text-center bg-danger text-white'> Please provide a username and password </div>";

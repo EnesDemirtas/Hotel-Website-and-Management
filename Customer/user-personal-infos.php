@@ -1,7 +1,9 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
 include 'getPersonalInfos.php';
-require "../phpFunctions/routing.php"; ?>
+require "../phpFunctions/routing.php"; 
+include '../phpFunctions/security.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -178,45 +180,7 @@ require "../phpFunctions/routing.php"; ?>
 
                         ?>
 
-                        <!-- <div class="col-6">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                        </div>
 
-                        <div class="col-6">
-                            <label for="lastname">Last Name</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control">
-                        </div>
-                    </div>
-
-
-                    <div class="row form-row mb-4">
-                        <div class="col-6">
-                            <label for="telephone">Telephone</label>
-                            <input type="tel" name="telephone" id="telephone" class="form-control">
-                        </div>
-
-                        <div class="col-6">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control">
-                        </div>
-                    </div>
-
-
-                    <div class="row form-row">
-                        <div class="col-6">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-7"></div>
-                        <div class="col-2">
-                            <button class="btn btn-danger">Save Changes</button>
-                        </div>
-                    </div> -->
                 </form>
             </div>
 

@@ -5,8 +5,8 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
-check_in_date_ui_month = monthNames[check_in_date_ui_month];
-check_out_date_ui_month = monthNames[check_out_date_ui_month];
+check_in_date_ui_month = monthNames[check_in_date_ui_month-1];
+check_out_date_ui_month = monthNames[check_out_date_ui_month-1];
 
 console.log(room_no_ui);
 console.log(isCurrent);

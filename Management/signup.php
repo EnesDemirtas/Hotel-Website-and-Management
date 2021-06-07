@@ -2,6 +2,7 @@
 session_start();
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/routing.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -33,25 +34,26 @@ include '../phpFunctions/routing.php';
     <?php
     if (isset($_POST['signup-submit'])) {
         $my_staff_type_id = $_POST['staff-type'];
-        echo $my_staff_type_id;
-        $username = $_POST['signup-username'];
+        $username = escape_sanitize_input($conn, $_POST['signup-username'], "string");
         $password = $_POST['signup-password'];
         $password2 = $_POST['signup-password2'];
-        $name = $_POST['signup-name'];
-        $phone_number = $_POST['signup-tel'];
-        $email = $_POST['signup-email'];
+        $name = escape_sanitize_input($conn, $_POST['signup-name'], "string");
+        $phone_number = escape_sanitize_input($conn, $_POST['signup-tel'], "string");
+        $email = escape_sanitize_input($conn, $_POST['signup-email'], "email");
 
 
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Invalid email format";
             echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
         } else {
             if ($password != $password2) {
                 echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
             } else {
+
+                $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
+
                 $sql = "INSERT INTO staffs (staff_type, username, password, name, phone_number, email) 
-                VALUES ('$my_staff_type_id', '$username', '$password', '$name', '$phone_number', '$email')";
+                VALUES ('$my_staff_type_id', '$username', '$hashed_pw', '$name', '$phone_number', '$email')";
                 if ($conn->query($sql) === TRUE) {
                     //   echo "New record created successfully"; 
                     go('login.php');
@@ -156,7 +158,7 @@ include '../phpFunctions/routing.php';
 
     for ($x = 0; $x < sizeof($staff_types); $x++) {
         $staff_type = $staff_types[$x]['staff_type'];
-        $staff_type_id = $staff_types[$x]['staff_type_id'];
+        $staff_type_id = $staff_types[$x]['id'];
 
         echo "
         <script type=\"text/javascript\">

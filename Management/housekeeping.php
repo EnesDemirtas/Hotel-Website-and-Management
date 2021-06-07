@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+include '../phpFunctions/databaseConnection.php';
+?>
 <!DOCTYPE php>
 <html lang="en">
 
@@ -10,13 +12,10 @@
     <meta name="description" content="Hotel Mazarin">
 
     <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
     <!--Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -39,7 +38,7 @@
 
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
-                    <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
@@ -56,6 +55,20 @@
         </header>
     </div>
     <!--Navbar End-->
+
+    <?php
+
+echo "
+<script type=\"text/javascript\" src=\"clearDirtyRooms.js\">
+</script>
+";
+
+    $get_dirty_rooms_sql = mysqli_query($conn, "SELECT r.room_no, rt.room_name, s.name FROM rooms r 
+    INNER JOIN room_types rt ON r.room_type = rt.id
+    INNER JOIN staffs s ON r.cleaner_id = s.id
+    WHERE isAvailable = 0 AND isFull = 0");
+    $get_dirty_rooms = $get_dirty_rooms_sql->fetch_all(1);
+    ?>
 
 
 
@@ -79,100 +92,47 @@
                         <th>Room Number</th>
                         <th>Room Type</th>
                         <th>Cleaner</th>
-                        <th>Housekeeping Status</th>
+                        <th>Mark as Cleared</th>
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr>
-                        <th><span class="border border-dark px-4 py-1">203</span></th>
-                        <td><span class="border border-dark px-4 py-1">Relax Deluxe</span></td>
-                        <td><span class="border border-dark px-4 py-1">Jenny Taylor</span></td>
-                        <td>
-                            <select name="status" id="status">
-                                <option value="dirty">Dirty</option>
-                                <option value="clean" selected>Clean</option>
-                                <option value="clean-again">Need to be clean again</option>
-                                <option value="">Select Housekeeping Status...</option>
-                            </select>
-                        </td>
-                    </tr>
+                <tbody id="dirty-rooms-body">
 
-                    <tr>
-                        <th><span class="border border-dark px-4 py-1">101</span></th>
-                        <td><span class="border border-dark px-4 py-1">Platinum Deluxe</span></td>
-                        <td><span class="border border-dark px-4 py-1">Nana Fox</span></td>
-                        <td>
-                            <select name="status" id="status">
-                                <option value="dirty" selected>Dirty</option>
-                                <option value="clean">Clean</option>
-                                <option value="clean-again">Need to be clean again</option>
-                                <option value="">Select Housekeeping Status...</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><span class="border border-dark px-4 py-1">56</span></th>
-                        <td><span class="border border-dark px-4 py-1">Corner Exclusive</span></td>
-                        <td><span class="border border-dark px-4 py-1">Jenny Taylor</span></td>
-                        <td>
-                            <select name="status" id="status">
-                                <option value="dirty">Dirty</option>
-                                <option value="clean">Clean</option>
-                                <option value="clean-again" selected>Need to be clean again</option>
-                                <option value="">Select Housekeeping Status...</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><span class="border border-dark px-4 py-1">501</span></th>
-                        <td><span class="border border-dark px-4 py-1">Premier Master Suite</span></td>
-                        <td><span class="border border-dark px-4 py-1">Alex Trinidad</span></td>
-                        <td>
-                            <select name="status" id="status">
-                                <option value="dirty">Dirty</option>
-                                <option value="clean">Clean</option>
-                                <option value="clean-again">Need to be clean again</option>
-                                <option value="" selected>Select Housekeeping Status...</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><span class="border border-dark px-4 py-1">103</span></th>
-                        <td><span class="border border-dark px-4 py-1">Relax Deluxe</span></td>
-                        <td><span class="border border-dark px-4 py-1">Haylee Milroy</span></td>
-                        <td>
-                            <select name="status" id="status">
-                                <option value="dirty">Dirty</option>
-                                <option value="clean">Clean</option>
-                                <option value="clean-again">Need to be clean again</option>
-                                <option value="" selected>Select Housekeeping Status...</option>
-                            </select>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
-
-            <div class="row">
-                <div class="col-md-9"></div>
-                <div class="col-md-3">
-                    <button class="btn btn-primary">Save Changes</button>
-                </div>
-            </div>
         </div>
     </div>
 
     <!--Sidebar and Main Content End-->
 
+    <?php
+
+    for ($x = 0; $x < sizeof($get_dirty_rooms); $x++) {
+        $dirty_room_no = $get_dirty_rooms[$x]['room_no'];
+        $dirty_room_name = $get_dirty_rooms[$x]['room_name'];
+        $dirty_room_housekeeper = $get_dirty_rooms[$x]['name'];
+
+        echo "
+        <script type=\"text/javascript\">
+            var dirty_room_no_ui = '" . $dirty_room_no . "';
+            var dirty_room_name_ui = '" . $dirty_room_name . "';
+            var dirty_room_housekeeper_ui = '" . $dirty_room_housekeeper . "';
+        </script>
+        ";
+
+        echo "
+        <script type=\"text/javascript\" src=\"listDirtyRooms.js\">
+        </script>
+        ";
+    }
+
+    ?>
 
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
 
     <script src="../app.js"></script>
