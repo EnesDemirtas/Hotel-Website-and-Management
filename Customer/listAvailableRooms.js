@@ -6,7 +6,7 @@ switch(room_type_ui){
     case 1:
         if(num_of_standard_ui == 1){
             var standard_rooms_btn_div = `
-            <section id='main-content' class='mt-5'>
+            
             <div class='row d-flex justify-content-center mb-5'>
                 <div class='col-3'>
                     <button type='button' class='btn btn-primary' onclick=\"javascript:toggler('standard-rooms');\">Show Standard Rooms</button>

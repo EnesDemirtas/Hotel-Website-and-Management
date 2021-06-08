@@ -16,6 +16,8 @@ function listActiveReservations() {
                 var number_of_children = res[i]['number_of_children'];
                 var total_price = res[i]['total_price_TL'];
 
+                document.getElementById('active-reservations').innerHTML = "";
+
                 document.getElementById('active-reservations').innerHTML += `
                 <div class="row">
                 <form class="col-8 my-4 border border-dark p-4" action="deneme.php" method="POST">

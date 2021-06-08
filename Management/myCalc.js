@@ -24,41 +24,24 @@ function update_total_price() {
         method: 'POST',
         data: { diff: diffDays, room: selected_room },
         success: function (res) {
-            document.getElementById('total-price').value = res;
+            var myArray = JSON.parse(res);
+            document.getElementById('total-price').value = myArray[0];
 
-            $.ajax({
-                url: 'myAjax.php',
-                method: 'POST',
-                data: { room: selected_room },
-                success: function (data) {
-                    var max_adult = Number(data);
-                    document.getElementById('check-in-adults').innerHTML = "";
-                    for (var i = 0; i < max_adult; i++) {
-                        var myElement = `<option value='${i + 1}'>${i + 1}</option>`;
-                        document.getElementById('check-in-adults').innerHTML += myElement;
-                    }
+            var max_adult = Number(myArray[1]);
+            document.getElementById('check-in-adults').innerHTML = "";
+            for (var i = 0; i < max_adult; i++) {
+                var myElement = `<option value='${i + 1}'>${i + 1}</option>`;
+                document.getElementById('check-in-adults').innerHTML += myElement;
+            }
 
-                    $.ajax({
-                        url: 'myAjax2.php',
-                        method: 'POST',
-                        data: { room: selected_room },
-                        success: function (data) {
-                            var max_children = Number(data);
-                            document.getElementById('check-in-children').innerHTML = "";
-                            for (var i = 0; i < max_children; i++) {
-                                var myElement = `<option value='${i + 1}'>${i + 1}</option>`;
-                                document.getElementById('check-in-children').innerHTML += myElement;
-                            }
+            var max_children = Number(myArray[2]);
+            document.getElementById('check-in-children').innerHTML = "";
+            for (var i = 0; i < max_children; i++) {
+                var myElement = `<option value='${i + 1}'>${i + 1}</option>`;
+                document.getElementById('check-in-children').innerHTML += myElement;
+            }
 
 
-                        }
-
-
-                    });
-                }
-
-
-            })
 
         }
 

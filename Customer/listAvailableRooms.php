@@ -9,7 +9,7 @@ function listAvailableRooms($conn, $search_check_in_date, $search_check_out_date
 
     echo "
     <script type=\"text/javascript\">
-    var available_rooms = document.getElementById('rooms-main-content');
+    var available_rooms = document.getElementById('main-content');
     available_rooms.innerHTML = '';
 
     var check_in_date_ui = document.getElementById('checkin-room-searching');
