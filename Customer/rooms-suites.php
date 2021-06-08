@@ -1,6 +1,7 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
-include 'listAvailableRooms.php' ?>
+include 'listAvailableRooms.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -217,10 +218,10 @@ include 'listAvailableRooms.php' ?>
     <?php
 
     if (isset($_POST['list-available-rooms'])) {
-        $user_check_in_date = $_POST['checkin-room-searching'];
-        $user_check_out_date = $_POST['checkout-room-searching'];
-        $user_adults = $_POST['adults-room-searching'];
-        $user_children = $_POST['children-room-searching'];
+        $user_check_in_date = escape_sanitize_input($conn, $_POST['checkin-room-searching'], "string");
+        $user_check_out_date = escape_sanitize_input($conn, $_POST['checkout-room-searching'], "string");
+        $user_adults = escape_sanitize_input($conn, $_POST['adults-room-searching'], "string");
+        $user_children = escape_sanitize_input($conn, $_POST['children-room-searching'], "string");
 
         listAvailableRooms($conn, $user_check_in_date, $user_check_out_date, $user_adults, $user_children);
     } else {

@@ -1,5 +1,6 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -108,9 +109,9 @@ echo "
     <?php
 
     for ($x = 0; $x < sizeof($get_dirty_rooms); $x++) {
-        $dirty_room_no = $get_dirty_rooms[$x]['room_no'];
-        $dirty_room_name = $get_dirty_rooms[$x]['room_name'];
-        $dirty_room_housekeeper = $get_dirty_rooms[$x]['name'];
+        $dirty_room_no = escape_sanitize_output($get_dirty_rooms[$x]['room_no']);
+        $dirty_room_name = escape_sanitize_output($get_dirty_rooms[$x]['room_name']);
+        $dirty_room_housekeeper = escape_sanitize_output($get_dirty_rooms[$x]['name']);
 
         echo "
         <script type=\"text/javascript\">

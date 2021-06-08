@@ -1,5 +1,6 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -89,8 +90,8 @@ include '../phpFunctions/databaseConnection.php';
             <div class="row">
                 <div class="col-6">
                     <label for="search-room-number">Search by Room Number: </label>
-                    <input type="number" id="search-room-number" name="search-room-number" class="m-3">
-                    <button class="btn btn-secondary">Search</button>
+                    <input type="number" id="search-room-number" name="search-room-number" class="m-3" value=""
+                    onkeyup="getSearchedReservation(this.value);">
                 </div>
 
                 <div class="col-4 mt-3">

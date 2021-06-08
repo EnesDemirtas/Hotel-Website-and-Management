@@ -51,6 +51,7 @@ include '../phpFunctions/security.php';
                     $_SESSION["session_username"] = $username;
     
                     go('rooms.php');
+                    die();
                 }else {
                     echo "<div class='text-center bg-danger text-white'> Invalid username or/and password! </div>";
                 }

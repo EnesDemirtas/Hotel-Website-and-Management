@@ -33,7 +33,7 @@ include '../phpFunctions/security.php';
 
     <?php
     if (isset($_POST['signup-submit'])) {
-        $my_staff_type_id = $_POST['staff-type'];
+        $my_staff_type_id = escape_sanitize_input($conn, $_POST['staff-type'], "string");
         $username = escape_sanitize_input($conn, $_POST['signup-username'], "string");
         $password = $_POST['signup-password'];
         $password2 = $_POST['signup-password2'];

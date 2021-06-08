@@ -1,3 +1,39 @@
+function check_date_validity(){
+
+    var check_in_date = document.getElementById("check-in-date").value;
+    var in_date_day = check_in_date.split('-')[2];
+    var in_date_month = check_in_date.split('-')[1];
+    var in_date_year = check_in_date.split('-')[0];
+    var myString_in = in_date_year + "-" + in_date_month + "-" + in_date_day;
+    
+
+    var check_out_date = document.getElementById("check-out-date").value;
+    var out_date_day = check_out_date.split('-')[2];
+    var out_date_month = check_out_date.split('-')[1];
+    var out_date_year = check_out_date.split('-')[0];
+    var myString_out = out_date_year + "-" + out_date_month + "-" + out_date_day;
+    
+    var myArray = {};
+    myArray[0] = myString_in;
+    myArray[1] = myString_out;
+
+    $.ajax({
+        url: '../Customer/check-date-validity.php',
+        method: 'POST',
+        data: { dates: myArray },
+        success: function (res) {
+            var array_temp = JSON.parse(res);
+            document.getElementById("check-in-date").value = array_temp[0];
+            document.getElementById("check-out-date").value = array_temp[1];
+            
+            update_total_price();
+            
+        }
+
+    })
+
+}
+
 function update_total_price() {
     var in_date = document.getElementById('check-in-date').value;
     var in_date_day = in_date.split('-')[2];
@@ -47,9 +83,3 @@ function update_total_price() {
 
     })
 }
-
-
-
-
-
-

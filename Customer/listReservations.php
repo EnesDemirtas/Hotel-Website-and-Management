@@ -1,4 +1,7 @@
-<?php include '../phpFunctions/databaseConnection.php';?>
+<?php include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/security.php';
+
+?>
 
 <?php 
 
@@ -7,7 +10,7 @@ function listCurrentReservations($conn){
 
 
     $current_date = date('Y-m-d');
-    $session_username = $_SESSION['session_username'];
+    $session_username = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
 
     $checkCurrentReservations = mysqli_query(
         $conn,
@@ -31,16 +34,16 @@ function listCurrentReservations($conn){
 
 
     for ($x = 0; $x < sizeof($currentReservations); $x++) {
-        $room_no = $currentReservations[$x]['room_no'];
-        $room_type = $currentReservations[$x]['room_type'];
+        $room_no = escape_sanitize_output($currentReservations[$x]['room_no']);
+        $room_type = escape_sanitize_output($currentReservations[$x]['room_type']);
         
-        $room_name = $currentReservations[$x]['room_name'];
+        $room_name = escape_sanitize_output($currentReservations[$x]['room_name']);
         
 
 
 
-        $number_of_adults = $currentReservations[$x]['number_of_adults'];
-        $number_of_children = $currentReservations[$x]['number_of_children'];
+        $number_of_adults = escape_sanitize_output($currentReservations[$x]['number_of_adults']);
+        $number_of_children = escape_sanitize_output($currentReservations[$x]['number_of_children']);
         $check_in_date = $currentReservations[$x]['check_in_date'];
 
         $check_in_date_year = explode("-", $check_in_date)[0];
@@ -60,7 +63,6 @@ function listCurrentReservations($conn){
             var isCurrent = true;
 
             var room_name_ui = \"" . $room_name .  "\";
-            console.log(room_name_ui);
 
             var room_no_ui = " . $room_no . ";
             var room_type_ui = " . $room_type . ";
@@ -123,11 +125,11 @@ function listPastReservations($conn){
 
 
     for ($x = 0; $x < sizeof($pastReservations); $x++) {
-        $room_no = $pastReservations[$x]['room_no'];
-        $room_type = $pastReservations[$x]['room_type'];
-        $room_name = $pastReservations[$x]['room_name'];
-        $number_of_adults = $pastReservations[$x]['number_of_adults'];
-        $number_of_children = $pastReservations[$x]['number_of_children'];
+        $room_no = escape_sanitize_output($pastReservations[$x]['room_no']);
+        $room_type = escape_sanitize_output($pastReservations[$x]['room_type']);
+        $room_name = escape_sanitize_output($pastReservations[$x]['room_name']);
+        $number_of_adults = escape_sanitize_output($pastReservations[$x]['number_of_adults']);
+        $number_of_children = escape_sanitize_output($pastReservations[$x]['number_of_children']);
         $check_in_date = $pastReservations[$x]['check_in_date'];
 
         $check_in_date_year = explode("-", $check_in_date)[0];

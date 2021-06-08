@@ -1,6 +1,7 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
-include 'listReservations.php' ?>
+include 'listReservations.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,13 +107,23 @@ include 'listReservations.php' ?>
     if (isset($_POST['cancel-reservation'])) {
 
 
-        $cancel_room_no = $_POST['cancel-room-no'];
-        $session_username = $_SESSION['session_username'];
+        $cancel_room_no = escape_sanitize_input($conn, $_POST['cancel-room-no'], "string");
+        $session_username = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
 
-        $new_sql = "UPDATE reservation_records SET isActive = 0 WHERE customer_username = '$session_username' and room_no = '$cancel_room_no'";
+        $new_sql = "UPDATE reservation_records SET isActive = 0 
+        WHERE customer_username = '$session_username' and room_no = '$cancel_room_no' and isActive = 1 ";
 
         if ($conn->query($new_sql) === TRUE) {
-            echo "<div class='text-center bg-success text-white'> The reservation has been cancelled/finished successfully... </div>";
+
+            $change_room_status_sql = "UPDATE rooms SET isFull = 0, customer_id = NULL
+            WHERE room_no = $cancel_room_no ";
+
+            if($conn->query($change_room_status_sql) === TRUE){
+                echo "<div class='text-center bg-success text-white'> The reservation has been cancelled/finished successfully... </div>";
+            } else {
+                echo "Error: " . $change_room_status_sql . "<br>" . $conn->error;
+            }
+
         } else {
             echo "Error: " . $new_sql . "<br>" . $conn->error;
         }
@@ -125,9 +136,9 @@ include 'listReservations.php' ?>
     if (isset($_POST['request-message'])) {
 
         $username_session = $_SESSION['session_username'];
-        $message_room_no = $_POST['message-room-no'];
+        $message_room_no = escape_sanitize_input($conn, $_POST['message-room-no'], "string");
         $current_datetime = date('Y-m-d H:i:s');
-        $request_message = $_POST['message'];
+        $request_message =  escape_sanitize_input($conn,$_POST['message'], "string");
 
 
         $request_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message, isRead) 
@@ -144,9 +155,9 @@ include 'listReservations.php' ?>
     if (isset($_POST['feedback-message'])) {
 
         $username_session = $_SESSION['session_username'];
-        $feedback_message_room_no = $_POST['feedback-message-room-no'];
+        $feedback_message_room_no = escape_sanitize_input($conn, $_POST['feedback-message-room-no'], "string");
         $current_datetime = date('Y-m-d H:i:s');
-        $feedback_message = $_POST['feedbackmessage'];
+        $feedback_message = escape_sanitize_input($conn, $_POST['feedbackmessage'], "string");
 
 
         $feedback_sql = "INSERT INTO message_box (sender_username, message_room_no, message_type, message_time, message, isRead) 

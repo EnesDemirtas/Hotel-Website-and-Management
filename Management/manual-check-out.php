@@ -2,10 +2,11 @@
 
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/routing.php';
+include '../phpFunctions/security.php';
 
 if (isset($_POST['check-out'])) {
-    $check_out_id = $_POST['res-id'];
-    $check_out_room_no = $_POST['room-no'];
+    $check_out_id = escape_sanitize_input($conn, $_POST['res-id'], "string");
+    $check_out_room_no = escape_sanitize_input($conn, $_POST['room-no'], "string");
 
     $check_out_sql = "UPDATE reservation_records SET isActive = 0 WHERE id = '$check_out_id'";
 

@@ -1,7 +1,7 @@
 <?php
 include '../phpFunctions/databaseConnection.php';
-
-$message_id_mark = $_POST['message_id'];
+include '../phpFunctions/security.php';
+$message_id_mark = escape_sanitize_input($conn, $_POST['message_id'], "string");
 
 $mark_message_sql = "UPDATE message_box SET isRead = 1  WHERE id = $message_id_mark";
 

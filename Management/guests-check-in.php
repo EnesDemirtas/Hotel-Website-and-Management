@@ -2,6 +2,7 @@
 session_start();
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/routing.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -74,25 +75,17 @@ include '../phpFunctions/routing.php';
         <?php
 
         if (isset($_POST['guest-check-in'])) {
-            $guest_name = $_POST['guest-name'];
-            $check_in_date = $_POST['check-in-date'];
-            $check_out_date = $_POST['check-out-date'];
-            $room_number = $_POST['room-number'];
-            $num_of_adults = $_POST['adults'];
-            $num_of_children = $_POST['children'];
-            $total_price = $_POST['total-price'];
-            $special_request = $_POST['special-request'];
+            $guest_name = escape_sanitize_input($conn, $_POST['guest-name'], "string");
+            $check_in_date =  escape_sanitize_input($conn, $_POST['check-in-date'], "string");
+            $check_out_date = escape_sanitize_input($conn, $_POST['check-out-date'], "string");
+            $room_number = escape_sanitize_input($conn, $_POST['room-number'], "string");
+            $num_of_adults = escape_sanitize_input($conn, $_POST['adults'], "string");
+            $num_of_children = escape_sanitize_input($conn, $_POST['children'], "string");
+            $total_price = escape_sanitize_input($conn, $_POST['total-price'], "string");
+            $special_request = escape_sanitize_input($conn, $_POST['special-request'], "string");
 
-            echo $guest_name . " ~~ ";
-            echo $check_in_date . " ~~ ";
-            echo $check_out_date . " ~~ ";
-            echo $room_number . " ~~ ";
-            echo $num_of_adults . " ~~ ";
-            echo $num_of_children . " ~~ ";
-            echo $total_price . " ~~ ";
-            echo $special_request . " ~~ ";
-
-            if (empty($guest_name)) {
+            if (empty($guest_name) OR empty($check_in_date) OR empty($check_out_date) OR empty($room_number) OR empty($num_of_adults)
+            OR empty($num_of_children) OR empty($total_price)) {
                 echo "<div class='text-center bg-danger text-white'> Please provide all inputs correctly... </div>";
             } else {
                 $new_guest_sql = "INSERT INTO users (username, password, name) 
@@ -131,19 +124,18 @@ include '../phpFunctions/routing.php';
 
         ?>
 
-        <?php
 
-
-        echo "
-<script type=\"text/javascript\" src=\"myCalc.js\">
-</script> 
-";
-
-        ?>
 
         <?php
         $current_date = date('Y-m-d');
         $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));
+
+
+        
+        echo "
+            <script type=\"text/javascript\" src=\"checkDateValidity.js\">
+            </script> 
+            ";
         ?>
 
         <div class="main">
@@ -157,12 +149,14 @@ include '../phpFunctions/routing.php';
 
                         <div class="col-md-4">
                             <label for="check-in-date">Check In Date</label>
-                            <input type="date" name="check-in-date" id="check-in-date" class="form-control" onchange="javascript:update_total_price();" value="<?php echo $current_date ?>">
+                            <input type="date" name="check-in-date" id="check-in-date" class="form-control" 
+                            onchange="check_date_validity();" value="<?php echo $current_date ?>">
                         </div>
 
                         <div class="col-md-4">
                             <label for="check-out-date">Check Out Date</label>
-                            <input type="date" name="check-out-date" id="check-out-date" class="form-control" onchange="javascript:update_total_price();" value="<?php echo $tomorrow_date ?>">
+                            <input type="date" name="check-out-date" id="check-out-date" class="form-control" 
+                            onchange="check_date_validity();" value="<?php echo $tomorrow_date ?>">
                         </div>
                     </div>
 

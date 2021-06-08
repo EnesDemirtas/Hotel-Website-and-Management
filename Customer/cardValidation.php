@@ -1,7 +1,9 @@
 <?php
 session_start();
 include '../phpFunctions/databaseConnection.php';
-require "../phpFunctions/routing.php"; ?>
+require "../phpFunctions/routing.php"; 
+include '../phpFunctions/security.php';
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -39,9 +41,9 @@ require "../phpFunctions/routing.php"; ?>
     <?php
 
     if (isset($_POST['confirm-validation'])) {
-        $myUsername = $_SESSION['session_username'];
-        $booking_room_no = $_SESSION['booking_room_no'];
-        $booking_special_request = $_SESSION['booking_special_request'];
+        $myUsername = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
+        $booking_room_no = escape_sanitize_input($conn, $_SESSION['booking_room_no'], "string");
+        $booking_special_request =  escape_sanitize_input($conn, $_SESSION['booking_special_request'], "string");
         $sql = "INSERT INTO reservation_records (customer_username, room_no, isActive) VALUES ('$myUsername', '$booking_room_no', 1)";
 
         if ($conn->query($sql) === TRUE) {
@@ -50,11 +52,11 @@ require "../phpFunctions/routing.php"; ?>
             $fetch_res_request_id = $get_res_request_id->fetch_all(1);
             $res_request_id = $fetch_res_request_id[0]['id'];
 
-            $number_of_adults = $_SESSION['booking_adults'];
-            $number_of_children = $_SESSION['booking_children'];
-            $check_in_date = $_SESSION['booking_check_in_date'];
-            $check_out_date = $_SESSION['booking_check_out_date'];
-            $total_price = $_SESSION['booking_total_price'];
+            $number_of_adults = escape_sanitize_input($conn, $_SESSION['booking_adults'], "string");
+            $number_of_children = escape_sanitize_input($conn, $_SESSION['booking_children'], "string");
+            $check_in_date = escape_sanitize_input($conn, $_SESSION['booking_check_in_date'], "string");
+            $check_out_date = escape_sanitize_input($conn, $_SESSION['booking_check_out_date'], "string");
+            $total_price = escape_sanitize_input($conn, $_SESSION['booking_total_price'], "string");
 
             $new_sql = "INSERT INTO reservation_record_details (reservation_id, check_in_date, check_out_date, number_of_adults, 
             number_of_children, total_price_TL, special_request) VALUES ('$res_request_id', '$check_in_date', '$check_out_date', 

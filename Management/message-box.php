@@ -1,5 +1,6 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -112,11 +113,11 @@ echo "
 
     for ($x = 0; $x < sizeof($messages); $x++) {
         $message_id = $messages[$x]['id'];
-        $message_name = $messages[$x]['name'];
+        $message_name = escape_sanitize_output($messages[$x]['name']);
         $message_room_no = $messages[$x]['message_room_no'];
         $message_type = $messages[$x]['message_type'];
         $message_time = $messages[$x]['message_time'];
-        $message = $messages[$x]['message'];
+        $message = escape_sanitize_output($messages[$x]['message']);
         $message_is_read = $messages[$x]['isRead'];
 
         echo "

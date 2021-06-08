@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/security.php';
@@ -90,47 +90,27 @@ include '../phpFunctions/security.php';
 
 
 
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<div class='text-center bg-danger text-white'> Invalid email format! </div>";
+        } else {
+            if ($password != $password2) {
+                echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
             } else {
-                if ($password != $password2) {
-                    echo "<div class='text-center bg-danger text-white'> Passwords must match! </div>";
-                } else {
 
-                    $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
+                $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
 
-                    $sql = "INSERT INTO users (username, password, name, phone_number, email) 
+                $sql = "INSERT INTO users (username, password, name, phone_number, email) 
                 VALUES ('$username', '$hashed_pw', '$name', '$phone_number', '$email')";
-                    if ($conn->query($sql) === TRUE) {
-                        //   echo "New record created successfully"; 
-                        header("Location:login.php");
-                    } else {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
-                    }
-                    
+                if ($conn->query($sql) === TRUE) {
+                    //   echo "New record created successfully"; 
+                    header("Location:login.php");
+                    die();
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
                 }
             }
-        
+        }
     };
-
-
-
-
-    // if($username != '' and $password != ''){
-    //     if($username == 'admin' and $password == 'admin'){
-    //         header("Location:user-personal-infos.php?username=$username");
-    //         die();
-    //     } else {
-    //         echo "<div class='text-center bg-danger text-white'> Invalid username or/and password! </div>";
-    //     }
-
-    // } else {
-    //     echo "<div class='text-center bg-danger text-white'> Please provide a username and password </div>";
-    // }
-
-
-
-
 
     ?>
 

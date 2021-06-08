@@ -1,6 +1,8 @@
 <?php 
 include '../phpFunctions/databaseConnection.php';
 require "../phpFunctions/routing.php";
+include '../phpFunctions/security.php';
+
 ?>
 
 <?php  

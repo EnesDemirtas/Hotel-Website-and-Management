@@ -1,7 +1,8 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
 include 'getPersonalInfos.php';
-require "../phpFunctions/routing.php"; 
+require "../phpFunctions/routing.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +37,8 @@ require "../phpFunctions/routing.php";
     if (isset($_POST['confirm-reservation'])) {
         if (empty($_POST['name']) or empty($_POST['lastname']) or empty($_POST['card-number']) or empty($_POST['expireMM']) or empty($_POST['expireYY']) or empty($_POST['cvc'])) {
             echo "<div class='text-center bg-danger text-white'> Please provide all inputs correctly... </div>";
-        } else{
-            $_SESSION['booking_special_request'] = $_POST['special-request'];
+        } else {
+            $_SESSION['booking_special_request'] = escape_sanitize_input($conn, $_POST['special-request'], "string");
             go("cardValidation.php");
         }
     }
@@ -111,15 +112,14 @@ require "../phpFunctions/routing.php";
     <?php
 
     if (isset($_POST['book-button'])) {
-        $_SESSION['booking_room_no'] = $_POST['booking-room-no'];
-        $_SESSION['booking_room_name'] = $_POST['booking-room-name'];
-        $_SESSION['booking_room_type'] = $_POST['booking-room-type'];
-        $_SESSION['booking_total_price'] = $_POST['booking-total-price'];
-        $_SESSION['booking_adults'] = $_POST['booking-adults'];
-        $_SESSION['booking_children'] = $_POST['booking-children'];
-        $_SESSION['booking_check_in_date'] = $_POST['booking-check-in-date'];
-        $_SESSION['booking_check_out_date'] = $_POST['booking-check-out-date'];
-
+        $_SESSION['booking_room_no'] = escape_sanitize_input($conn, $_POST['booking-room-no'], "string");
+        $_SESSION['booking_room_name'] = escape_sanitize_input($conn, $_POST['booking-room-name'], "string");
+        $_SESSION['booking_room_type'] = escape_sanitize_input($conn, $_POST['booking-room-type'], "string");
+        $_SESSION['booking_total_price'] = escape_sanitize_input($conn, $_POST['booking-total-price'], "string");
+        $_SESSION['booking_adults'] = escape_sanitize_input($conn, $_POST['booking-adults'], "string");
+        $_SESSION['booking_children'] = escape_sanitize_input($conn, $_POST['booking-children'], "string");
+        $_SESSION['booking_check_in_date'] = escape_sanitize_input($conn, $_POST['booking-check-in-date'], "string");
+        $_SESSION['booking_check_out_date'] = escape_sanitize_input($conn, $_POST['booking-check-out-date'], "string");
     }
 
     ?>
@@ -154,7 +154,7 @@ require "../phpFunctions/routing.php";
                     </div>
 
                     <h4 class="my-4">Total Price: <?php echo $_SESSION['booking_total_price'] ?></h4>
-                    <h5>Adults: <?php echo $_SESSION['booking_adults']?>   Children: <?php echo $_SESSION['booking_children']?></h5>
+                    <h5>Adults: <?php echo $_SESSION['booking_adults'] ?> Children: <?php echo $_SESSION['booking_children'] ?></h5>
 
 
                 </div>

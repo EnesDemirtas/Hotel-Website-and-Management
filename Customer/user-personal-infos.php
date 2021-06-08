@@ -2,7 +2,6 @@
 include '../phpFunctions/databaseConnection.php';
 include 'getPersonalInfos.php';
 require "../phpFunctions/routing.php"; 
-include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

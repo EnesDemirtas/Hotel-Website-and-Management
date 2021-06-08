@@ -1,5 +1,6 @@
 <?php
 include '../phpFunctions/dateExplode.php';
+
 $get_dates = $_POST['dates'];
 $in_date = date_create($get_dates[0]);
 $in_date_str = date_format($in_date, "Y-m-d");
@@ -28,6 +29,10 @@ if($in_date < $current_day){
 } else if($out_date <= $in_date){
     $myArray[0] = dateToJS($current_day_temp, $tomorrow_day_temp)[0]; 
     $myArray[1] = dateToJS($current_day_temp, $tomorrow_day_temp)[1]; 
+    print json_encode($myArray);
+} else {
+    $myArray[0] = dateToJS($in_date_str, $out_date_str)[0]; 
+    $myArray[1] = dateToJS($in_date_str, $out_date_str)[1]; 
     print json_encode($myArray);
 }
 
