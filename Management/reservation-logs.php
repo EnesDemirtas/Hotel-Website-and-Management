@@ -1,6 +1,6 @@
-<?php session_start();
+<?php
+session_start();
 include '../phpFunctions/databaseConnection.php';
-include '../phpFunctions/security.php';
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -8,7 +8,7 @@ include '../phpFunctions/security.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Mazarin | Reservations</title>
+    <title>Hotel Mazarin | Reservation Records</title>
     <meta name="keyword" content="Hotel, Mazarin, Hotel Mazarin">
     <meta name="description" content="Hotel Mazarin">
 
@@ -25,6 +25,8 @@ include '../phpFunctions/security.php';
 </head>
 
 <body>
+
+
     <!--Navbar Start-->
 
     <div class="container">
@@ -44,7 +46,7 @@ include '../phpFunctions/security.php';
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" class="logout" href="login.php">
+                            <a class="nav-link" id="logout" href="login.php">
                                 Log out <span><i class="fa fa-sign-out-alt"></i></span>
                             </a>
                         </li>
@@ -57,18 +59,8 @@ include '../phpFunctions/security.php';
     <!--Navbar End-->
 
     <?php
-
-echo "
-<script type=\"text/javascript\" src=\"messageBoxFuncs.js\">
-</script>
-";
-
-    $get_messages_sql = mysqli_query($conn, "SELECT mb.id, u.name, mb.message_room_no, mb.message_type, mb.message_time, mb.message, mb.isRead FROM message_box mb 
-    INNER JOIN users u ON u.username = mb.sender_username");
-    $messages = $get_messages_sql->fetch_all(1);
-    ?>
-
-
+    $current_date = date('Y-m-d');
+    $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));    ?>
 
     <!--Sidebar and Main Content Start-->
 
@@ -78,70 +70,46 @@ echo "
             <a href="guests-check-in.php" style="padding-right: 0;">Guests Check In</a>
             <a href="guests-check-out.php" style="letter-spacing: -.25px; padding-right:0;">Guests Check Out</a>
             <a href="housekeeping.php">Housekeeping</a>
-            <a href="message-box.php" style="background-color: #198754af">Message Box</a>
-            <a href="reservation-logs.php" style="letter-spacing: -.25px; padding-right:0;">Reservation Logs</a>
+            <a href="message-box.php">Message Box</a>
+            <a href="reservation-logs.php" style="background-color: #198754af; letter-spacing: -.25px; padding-right:0;">Reservation Logs</a>
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
         <div class="main">
-            <div class="container border border-dark p-3 m-3" id="requests">
-                <div class="title">
-                    <h2>Customer Requests</h2>
+
+            <div class="row">
+                <div class="col-2">
+                    <span style="letter-spacing: -0.25px;" >List reservations between</span>
                 </div>
-
-                <div class="container-body" id="requests-body">
-
+                <div class="col-2">
+                    <input type="date" id="log-date-1" name="log-date-1" value="<?php echo $current_date;?>">
+                </div>
+                <div class="col-1" style="width: 4.17%;">
+                    <span> and </span>
+                </div>
+                <div class="col-2">
+                    <input type="date" id="log-date-2" name="log-date-2" value="<?php echo $tomorrow_date;?>">
+                </div>
+                <div class="col-2">
+                    <button class="btn" style="background-color: #198754; color: #ffffff;" id="log-search" 
+                    onclick="getLogs(document.getElementById('log-date-1').value, document.getElementById('log-date-2').value);">Search</button>
                 </div>
             </div>
 
-
-            <div class="container border border-dark p-3 m-3" id="feedbacks">
-                <div class="title">
-                    <h2>Customer Feedbacks</h2>
-                </div>
-
-                <div class="container-body" id="feedbacks-body">
-
-                </div>
-
+            <div id="reservation-logs">
+            
             </div>
+
+
         </div>
     </div>
 
-    <!--Sidebar and Main Content End-->
-
     <?php
-
-    for ($x = 0; $x < sizeof($messages); $x++) {
-        $message_id = $messages[$x]['id'];
-        $message_name = escape_sanitize_output($messages[$x]['name']);
-        $message_room_no = $messages[$x]['message_room_no'];
-        $message_type = $messages[$x]['message_type'];
-        $message_time = $messages[$x]['message_time'];
-        $message = escape_sanitize_output($messages[$x]['message']);
-        $message_is_read = $messages[$x]['isRead'];
-
-        echo "
-        <script type=\"text/javascript\">
-            var message_id_ui = '" . $message_id . "';
-            var message_name_ui = '" . $message_name . "';
-            var message_room_no_ui = '" . $message_room_no . "';
-            var message_type_ui = '" . $message_type . "';
-            var message_time_ui = '" . $message_time . "';
-            var message_ui = '" . $message . "';
-            var message_is_read_ui = '" . $message_is_read . "';
-        </script>
-        ";
-
-        echo "
-        <script type=\"text/javascript\" src=\"getMessages.js\">
-        </script>
-        ";
-    }
-
+            echo "
+            <script type=\"text/javascript\" src=\"getLogs.js\">
+            </script> 
+            ";
     ?>
-
-
 
 
 
@@ -152,8 +120,6 @@ echo "
     </script>
 
     <script src="../app.js"></script>
-
-
 </body>
 
 </html>

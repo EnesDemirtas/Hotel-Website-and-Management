@@ -1,7 +1,9 @@
 function listActiveReservations() {
+    var type = "active";
     $.ajax({
         url: 'listActiveReservations.php',
         method: 'POST',
+        data: { type : type },
         success: function (result) {
             document.getElementById('active-reservations').innerHTML = "";
             var res = JSON.parse(result);

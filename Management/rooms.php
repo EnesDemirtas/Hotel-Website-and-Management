@@ -78,6 +78,7 @@ include '../phpFunctions/databaseConnection.php';
             <a href="guests-check-out.php" style="letter-spacing: -.25px; padding-right:0;">Guests Check Out</a>
             <a href="housekeeping.php">Housekeeping</a>
             <a href="message-box.php">Message Box</a>
+            <a href="reservation-logs.php" style="letter-spacing: -.25px; padding-right:0;">Reservation Logs</a>
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
@@ -114,7 +115,7 @@ include '../phpFunctions/databaseConnection.php';
 
         if($is_available == 0 AND $is_full == 1){
             $details_sql = mysqli_query($conn, "SELECT r.room_no, rrd.check_in_date, rrd.check_out_date, rrd.number_of_adults, 
-            rrd.number_of_children 
+            rrd.number_of_children, rrd.total_price_TL, rrd.special_request 
             FROM rooms r 
             INNER JOIN reservation_records rr ON rr.room_no = r.room_no 
             INNER JOIN reservation_record_details rrd ON rrd.reservation_id = rr.id
@@ -127,6 +128,12 @@ include '../phpFunctions/databaseConnection.php';
                 $check_out_date = $details[0]['check_out_date'];
                 $number_of_adults = $details[0]['number_of_adults'];
                 $number_of_children = $details[0]['number_of_children'];
+                $total_price_TL = $details[0]['total_price_TL'];
+                $special_request = $details[0]['special_request'];
+
+                if($special_request === "" OR $special_request === NULL){
+                    $special_request = "im null";
+                }
 
                 echo "
                 <script type=\"text/javascript\">
@@ -134,6 +141,8 @@ include '../phpFunctions/databaseConnection.php';
                     var check_out_date_ui = '". $check_out_date . "';
                     var number_of_adults_ui = '". $number_of_adults . "';
                     var number_of_children_ui = '". $number_of_children . "';
+                    var total_price_TL_ui = '". $total_price_TL . "';
+                    var special_request_ui = '". $special_request . "';
                 </script>
                 ";
 

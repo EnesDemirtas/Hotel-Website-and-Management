@@ -16,6 +16,9 @@ if (is_available_ui == 1 && is_full_ui == 0) {
 
 
 } else if (is_available_ui == 0 && is_full_ui == 1 && liveReservation == 1) {
+    if(special_request_ui == "im null"){
+        special_request_ui = " - ";
+    }
     var myElement = `
     <div class="col-md-3 myRooms" onclick="location.href='#';" data-bs-toggle="modal" data-bs-target="#room-details-${room_no_ui}"
     style="background-color: rgba(241, 23, 23, 0.800); height: 8rem; white-space: pre; cursor: pointer;">
@@ -34,11 +37,13 @@ if (is_available_ui == 1 && is_full_ui == 0) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row"><div class="col-6"><div>Customer Name: ${customer_name_ui}</div></div></div>
+                <div class="row"><div class="col"><div>Customer Name: ${customer_name_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Check-in Date: ${check_in_date_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Check-out Date: ${check_out_date_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Adults: ${number_of_adults_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Children: ${number_of_children_ui}</div></div></div>
+                <div class="row"><div class="col-6"><div>Total Price: ${total_price_TL_ui}</div></div></div>
+                <div class="row"><div class="col"><div>Special Request: ${special_request_ui}</div></div></div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -53,6 +58,9 @@ if (is_available_ui == 1 && is_full_ui == 0) {
 
 
 } else if (is_available_ui == 0 && is_full_ui == 1 && liveReservation == 0) {
+    if(special_request_ui == "im null"){
+        special_request_ui = " - ";
+    }
     var myElement = `
     <div class="col-md-3 myRooms" onclick="location.href='#';" data-bs-toggle="modal" data-bs-target="#room-details-${room_no_ui}"
     style="background-color: rgba(253, 215, 0, 0.800); height: 8rem; white-space: pre; cursor: pointer;">
@@ -71,11 +79,13 @@ if (is_available_ui == 1 && is_full_ui == 0) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row"><div class="col-6"><div>Customer Name: ${customer_name_ui}</div></div></div>
+                <div class="row"><div class="col"><div>Customer Name: ${customer_name_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Check-in Date: ${check_in_date_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Check-out Date: ${check_out_date_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Adults: ${number_of_adults_ui}</div></div></div>
                 <div class="row"><div class="col-6"><div>Children: ${number_of_children_ui}</div></div></div>
+                <div class="row"><div class="col-6"><div>Total Price: ${total_price_TL_ui}</div></div></div>
+                <div class="row"><div class="col"><div>Special Request: ${special_request_ui}</div></div></div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

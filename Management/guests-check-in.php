@@ -69,6 +69,7 @@ include '../phpFunctions/security.php';
             <a href="guests-check-out.php" style="letter-spacing: -.25px; padding-right:0;">Guests Check Out</a>
             <a href="housekeeping.php">Housekeeping</a>
             <a href="message-box.php">Message Box</a>
+            <a href="reservation-logs.php" style="letter-spacing: -.25px; padding-right:0;">Reservation Logs</a>
             <a href="reports.php" style="border-bottom: none;">Reports</a>
         </div>
 
