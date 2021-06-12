@@ -114,9 +114,9 @@ include '../phpFunctions/security.php';
                     </li>
                     <?php
 
-                    if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
-
-                        echo "<li class='nav-item'>
+                    if (isset($_SESSION['session_username']) && isset($_SESSION['logged_in'])) {
+                        if($_SESSION['logged_in'] === true){
+                            echo "<li class='nav-item'>
                             <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
                         </li>
                         <li class='nav-item'>
@@ -128,6 +128,12 @@ include '../phpFunctions/security.php';
                             </button>
                         </form>
                         </li>";
+                        } else{
+                            echo " <li class='nav-item'>
+                            <a class='nav-link' href='login.php'>LOGIN</a>
+                        </li>";
+                        }
+
                     } else {
                         echo " <li class='nav-item'>
                             <a class='nav-link' href='login.php'>LOGIN</a>

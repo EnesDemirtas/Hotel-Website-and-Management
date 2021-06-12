@@ -141,27 +141,51 @@
 
     <!--Quick Booking-->
 
-    <section id="quick-booking">
-        <div class="form-row d-flex justify-content-center">
-            <span class="checkin">Check In</span>
-            <div class="form-group col-md-2" style="display: inline-block">
-                <input class="form-control" type="date" name="checkin" id="checkin" placeholder="">
-            </div>
-            <span class="checkout">Check Out</span>
-            <div class="form-group col-md-2" style="display: inline-block">
-                <input class="form-control" type="date" name="checkout" id="checkout" placeholder="">
-            </div>
-            <span class="adults">Adults</span>
-            <div class="form-group col-md-2" style="display: inline-block">
-                <input class="form-control" type="number" name="adults" id="adults" placeholder="Adults number">
-            </div>
-            <span class="children">Children</span>
-            <div class="form-group col-md-2" style="display: inline-block">
-                <input class="form-control" type="number" name="adults" id="adults" placeholder="Children number">
-            </div>
+    <script src="checkDateValidity.js"></script>
 
-            <button type="submit" class="btn btn-danger" style="display: inline-block">Book Now</button>
-        </div>
+    <?php
+
+    $current_date = date('Y-m-d');
+    $tomorrow_date = date('Y-m-d', strtotime($current_date . " + 1 days"));
+
+    ?>
+
+    <section id="quick-booking">
+        <form action="rooms-suites.php" method="POST">
+            <div class="form-row d-flex justify-content-center">
+                <span class="checkin">Check In</span>
+                <div class="form-group col-md-2" style="display: inline-block">
+                    <input class="form-control" type="date" name="checkin-guest" onchange="check_date_validity();" id="checkin-room-searching" value="<?php echo $current_date; ?>" min="<?php echo $current_date; ?>">
+                </div>
+                <span class="checkout">Check Out</span>
+                <div class="form-group col-md-2" style="display: inline-block">
+                    <input class="form-control" type="date" name="checkout-guest" id="checkout-room-searching" onchange="check_date_validity();" value="<?php echo $tomorrow_date; ?>" min="<?php echo $tomorrow_date; ?>">
+                </div>
+                <span class="adults">Adults</span>
+                <div class="form-group col-md-2" style="display: inline-block">
+                    <select class='form-control' type='number' name='adults-guest' id='adults-room-searching' value='1'>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                    </select>
+                </div>
+                <span class="children">Children</span>
+                <div class="form-group col-md-2" style="display: inline-block">
+                    <select class='form-control inline-block' type='number' name='children-guest' id='children-room-searching' value='1'>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
+                        <option value='6'>6</option>
+                        <option value='7'>7</option>
+                        <option value='8'>8</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-danger" name="booking-guest" style="display: inline-block">Book Now</button>
+            </div>
 
         </form>
     </section>

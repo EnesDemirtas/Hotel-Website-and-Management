@@ -86,7 +86,7 @@ var myRoom = `<div class="row room-${room_no_ui}" style="margin-bottom: 6rem">
 
     <div class="main-content-button d-flex justify-content-end">
 
-        <h4 class="mx-5">Total Price: ${room_total_price_ui}</h4>
+        <h4 class="mx-5">Total Price: ${room_total_price_ui} TL</h4>
 
         <form action="reservation.php" method="POST">
             <input type="hidden" name="booking-room-no" value="${room_no_ui}">

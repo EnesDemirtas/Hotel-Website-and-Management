@@ -137,8 +137,7 @@ include 'listAvailableRooms.php';
                     <div class='col-md-3'>
                         <div class='form-group'>
                             <span class='text-center' style='color: #2c43c7; font-weight:700;'>Check In</span>
-                            <input class='form-control inline-block' type='date' name='checkin-room-searching' 
-                            onchange='check_date_validity()' id='checkin-room-searching' value='<?php echo $current_date; ?>'>
+                            <input class='form-control inline-block' type='date' name='checkin-room-searching' min="<?php echo $current_date; ?>" onchange='check_date_validity()' id='checkin-room-searching' value='<?php echo $current_date; ?>'>
                         </div>
                     </div>
 
@@ -146,8 +145,7 @@ include 'listAvailableRooms.php';
                     <div class='col-md-3'>
                         <div class='form-group'>
                             <span class='text-center' style='color: #2c43c7; font-weight:700;'>Check Out</span>
-                            <input class='form-control inline-block' type='date' name='checkout-room-searching' id='checkout-room-searching' 
-                            onchange="check_date_validity();" value='<?php echo $tomorrow_date; ?>'>
+                            <input class='form-control inline-block' type='date' name='checkout-room-searching' id='checkout-room-searching' onchange="check_date_validity();" value='<?php echo $tomorrow_date; ?>' min="<?php echo $tomorrow_date; ?>">
                         </div>
                     </div>
 
@@ -224,6 +222,13 @@ include 'listAvailableRooms.php';
         $user_children = escape_sanitize_input($conn, $_POST['children-room-searching'], "string");
 
         listAvailableRooms($conn, $user_check_in_date, $user_check_out_date, $user_adults, $user_children);
+    } else if (isset($_POST['booking-guest'])) {
+        $guest_check_in_date = escape_sanitize_input($conn, $_POST['checkin-guest'], "string");
+        $guest_check_out_date = escape_sanitize_input($conn, $_POST['checkout-guest'], "string");
+        $guest_adults = escape_sanitize_input($conn, $_POST['adults-guest'], "string");
+        $guest_children = escape_sanitize_input($conn, $_POST['children-guest'], "string");
+
+        listAvailableRooms($conn, $guest_check_in_date, $guest_check_out_date, $guest_adults, $guest_children);
     } else {
         listAvailableRooms($conn, $current_date, $tomorrow_date, 1, 1);
     }
