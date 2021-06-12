@@ -57,10 +57,10 @@
                         </li>
                         <?php
 
-                        if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
+                        if (isset($_SESSION['session_username_customer']) && $_SESSION["logged_in"] === true) {
 
                             echo "<li class='nav-item'>
-                                <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+                                <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username_customer'] . " </a>
                             </li>
                             <li class='nav-item'>
                             <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>
@@ -155,7 +155,9 @@
             <div class="form-row d-flex justify-content-center">
                 <span class="checkin">Check In</span>
                 <div class="form-group col-md-2" style="display: inline-block">
-                    <input class="form-control" type="date" name="checkin-guest" onchange="check_date_validity();" id="checkin-room-searching" value="<?php echo $current_date; ?>" min="<?php echo $current_date; ?>">
+                    <input class="form-control" type="date" name="checkin-guest" onchange="check_date_validity();" id="checkin-room-searching" 
+                    value="<?php echo $current_date; ?>" min="<?php echo $current_date; ?>" 
+                    max="javascript:document.getElementById('checkout-room-searching').value">
                 </div>
                 <span class="checkout">Check Out</span>
                 <div class="form-group col-md-2" style="display: inline-block">
@@ -172,7 +174,8 @@
                 </div>
                 <span class="children">Children</span>
                 <div class="form-group col-md-2" style="display: inline-block">
-                    <select class='form-control inline-block' type='number' name='children-guest' id='children-room-searching' value='1'>
+                    <select class='form-control inline-block' type='number' name='children-guest' id='children-room-searching' value='0'>
+                        <option value='0'>0</option>
                         <option value='1'>1</option>
                         <option value='2'>2</option>
                         <option value='3'>3</option>

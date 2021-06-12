@@ -1,6 +1,11 @@
 <?php
 session_start();
 include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/routing.php';
+include '../phpFunctions/security.php';
+if (!isset($_SESSION['session_username'])) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -41,7 +46,7 @@ include '../phpFunctions/databaseConnection.php';
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="staff-profile.php">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
                         </li>
@@ -57,6 +62,33 @@ include '../phpFunctions/databaseConnection.php';
         </header>
     </div>
     <!--Navbar End-->
+
+    <?php
+
+    if(isset($_POST['new-room-submit'])){
+        $new_room_no = escape_sanitize_input($conn, $_POST['new-room-no'], "string");
+        $new_room_type_id = escape_sanitize_input($conn, $_POST['new-room-type'], "string");
+        $new_room_cleaner_id = escape_sanitize_input($conn, $_POST['new-room-cleaner'], "string");
+
+        $new_room_sql = "INSERT INTO rooms (room_no, room_type, isAvailable, isFull, customer_id, cleaner_id)
+        VALUES ($new_room_no, $new_room_type_id, 1, 0, NULL, $new_room_cleaner_id)";
+
+        if($conn->query($new_room_sql) === TRUE){
+            echo "
+            <script type=\"text/javascript\">
+                alert('New room is added successfully...');
+            </script>
+            ";
+        } else {
+            echo "
+            <script type=\"text/javascript\">
+                alert('Please enter a unique room number...');
+            </script>
+            ";
+        }
+    }
+
+    ?>
 
     <?php
     $get_rooms_sql = mysqli_query($conn, "SELECT r.room_no, r.room_type, rt.room_name, r.isAvailable, r.isFull, r.customer_id, 
@@ -99,21 +131,21 @@ include '../phpFunctions/databaseConnection.php';
         $room_name = $all_rooms[$x]['room_name'];
         $is_available = $all_rooms[$x]['isAvailable'];
         $is_full = $all_rooms[$x]['isFull'];
-        
+
         $customer_id = $all_rooms[$x]['customer_id'];
         $customer_name = $all_rooms[$x]['customer_name'];
-        if($customer_id === NULL){
+        if ($customer_id === NULL) {
             $customer_id = 'im null';
             $customer_name = 'im null';
         }
-        
-        
+
+
         $cleaner_id = $all_rooms[$x]['cleaner_id'];
         $cleaner_name = $all_rooms[$x]['staff_name'];
 
         $current_date = date('Y-m-d');
 
-        if($is_available == 0 AND $is_full == 1){
+        if ($is_available == 0 and $is_full == 1) {
             $details_sql = mysqli_query($conn, "SELECT r.room_no, rrd.check_in_date, rrd.check_out_date, rrd.number_of_adults, 
             rrd.number_of_children, rrd.total_price_TL, rrd.special_request 
             FROM rooms r 
@@ -123,7 +155,7 @@ include '../phpFunctions/databaseConnection.php';
 
             $details = $details_sql->fetch_all(1);
 
-            if(sizeof($details) != 0){
+            if (sizeof($details) != 0) {
                 $check_in_date = $details[0]['check_in_date'];
                 $check_out_date = $details[0]['check_out_date'];
                 $number_of_adults = $details[0]['number_of_adults'];
@@ -131,28 +163,28 @@ include '../phpFunctions/databaseConnection.php';
                 $total_price_TL = $details[0]['total_price_TL'];
                 $special_request = $details[0]['special_request'];
 
-                if($special_request === "" OR $special_request === NULL){
+                if ($special_request === "" or $special_request === NULL) {
                     $special_request = "im null";
                 }
 
                 echo "
                 <script type=\"text/javascript\">
-                    var check_in_date_ui = '". $check_in_date . "';
-                    var check_out_date_ui = '". $check_out_date . "';
-                    var number_of_adults_ui = '". $number_of_adults . "';
-                    var number_of_children_ui = '". $number_of_children . "';
-                    var total_price_TL_ui = '". $total_price_TL . "';
-                    var special_request_ui = '". $special_request . "';
+                    var check_in_date_ui = '" . $check_in_date . "';
+                    var check_out_date_ui = '" . $check_out_date . "';
+                    var number_of_adults_ui = '" . $number_of_adults . "';
+                    var number_of_children_ui = '" . $number_of_children . "';
+                    var total_price_TL_ui = '" . $total_price_TL . "';
+                    var special_request_ui = '" . $special_request . "';
                 </script>
                 ";
 
-                if($details[0]['check_in_date'] <= $current_date){
+                if ($details[0]['check_in_date'] <= $current_date) {
                     echo "
                     <script type=\"text/javascript\">
                         var liveReservation = 1;
                     </script>
                     ";
-                }else {
+                } else {
                     echo "
                     <script type=\"text/javascript\">
                         var liveReservation = 0;
@@ -160,7 +192,6 @@ include '../phpFunctions/databaseConnection.php';
                     ";
                 }
             }
-            
         }
 
         echo "
@@ -169,17 +200,17 @@ include '../phpFunctions/databaseConnection.php';
 
         var room_no_ui = '" . $room_no .  "';
         var room_name_ui = '" . $room_name .  "';
-        var is_available_ui = '". $is_available . "';
-        var is_full_ui = '". $is_full . "';
-        var cleaner_id_ui = '". $cleaner_id . "';
-        var cleaner_name_ui = '". $cleaner_name . "';
+        var is_available_ui = '" . $is_available . "';
+        var is_full_ui = '" . $is_full . "';
+        var cleaner_id_ui = '" . $cleaner_id . "';
+        var cleaner_name_ui = '" . $cleaner_name . "';
         
-        var customer_id_ui = '". $customer_id . "';
-        var customer_name_ui = '". $customer_name . "';
+        var customer_id_ui = '" . $customer_id . "';
+        var customer_name_ui = '" . $customer_name . "';
 
 
 
-        var counter = '". $counter. "';
+        var counter = '" . $counter . "';
         </script>
         ";
 
@@ -187,7 +218,6 @@ include '../phpFunctions/databaseConnection.php';
         <script type=\"text/javascript\" src=\"getRooms.js\">
         </script> 
         ";
-        
     }
 
     echo "
@@ -195,7 +225,99 @@ include '../phpFunctions/databaseConnection.php';
     </script>
     ";
 
+
+    echo "
+    <script type=\"text/javascript\">
+
+    document.getElementById('rooms').innerHTML += `
+    <button class='btn btn-danger mt-5' data-bs-toggle='modal' data-bs-target='#add-room'>Add a Room</button>
+
+    <div class='modal fade' id='add-room' tabindex='-1' aria-labelledby='add-room-title' aria-hidden='true'>
+    <div class='modal-dialog modal-dialog-centered'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title' id='add-room-title'>Add a New Room</h5>
+                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <form action='' method='post'>
+            <div class='modal-body'>
+
+                    <div class='row'>
+                        <div class='col'>
+                            <label>Room No</label>
+                            <input name='new-room-no' id='new-room-no' type='number' min='0'>
+                        </div>   
+                    </div>
+
+                    <div class='row'>
+                        <div class='col'>
+                            <label>Room Type</label>
+                            <select id='new-room-type' name='new-room-type'>
+                            </select>
+                        </div>   
+                    </div>
+
+                    <div class='row'>
+                        <div class='col'>
+                            <label>Housekeeper</label>
+                            <select id='new-room-cleaner' name='new-room-cleaner'>
+                            </select>
+                        </div>   
+                    </div>
+
+
+            </div>
+            <div class='modal-footer'>
+            <input type='submit' id='new-room-submit' name='new-room-submit' value='Add' class='btn btn-success'>
+            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+        </div>
+        </form>
+
+        </div>
+    </div>
+</div>
+    
+    `;
+
+    </script>
+    ";
+
     ?>
+
+    <?php
+
+    $room_types = mysqli_query($conn, "SELECT id, room_name FROM room_types");
+    $get_room_types = $room_types->fetch_all(1);
+
+    for($x = 0; $x < sizeof($get_room_types); $x++){
+        $room_name = $get_room_types[$x]['room_name'];
+        $room_type_id = $get_room_types[$x]['id'];
+
+        echo "
+        <script type=\"text/javascript\">
+            document.getElementById('new-room-type').innerHTML += `<option value='".$room_type_id."'>".$room_name."</option>`;
+        </script>
+        ";
+
+    }
+
+    $cleaners = mysqli_query($conn, "SELECT id, name FROM staffs WHERE staff_type = 3");
+    $get_cleaners = $cleaners->fetch_all(1);
+
+    for($x = 0; $x < sizeof($get_cleaners); $x++){
+        $cleaner_name = $get_cleaners[$x]['name'];
+        $cleaner_id = $get_cleaners[$x]['id'];
+
+        echo "
+        <script type=\"text/javascript\">
+            document.getElementById('new-room-cleaner').innerHTML += `<option value='".$cleaner_id."'>".$cleaner_name."</option>`;
+        </script>
+        ";
+
+    }
+
+    ?>
+
 
 
 

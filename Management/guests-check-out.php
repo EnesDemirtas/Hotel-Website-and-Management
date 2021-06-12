@@ -1,6 +1,11 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/security.php';
+include '../phpFunctions/routing.php';
+
+if (!isset($_SESSION['session_username'])) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -40,7 +45,7 @@ include '../phpFunctions/security.php';
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="staff-profile.php">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
                         </li>
@@ -91,14 +96,27 @@ include '../phpFunctions/security.php';
             <div class="row">
                 <div class="col-6">
                     <label for="search-room-number">Search by Room Number: </label>
-                    <input type="number" id="search-room-number" name="search-room-number" class="m-3" value=""
-                    onkeyup="getSearchedReservation(this.value);">
+                    <input type="number" id="search-room-number" name="search-room-number" class="m-3" value="" 
+                    onkeyup="getSearchedReservation(this.value, 'room_no');">
                 </div>
 
-                <div class="col-4 mt-3">
+                <div class="col-6">
+                    <label for="search-room-number">Search by Username: </label>
+                    <input type="text" id="search-username" name="search-username" class="m-3" value="" 
+                    onkeyup="getSearchedReservation(this.value, 'username');">
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <label for="search-room-number">Search by Name: </label>
+                    <input type="text" id="search-name" name="search-name" class="m-3" value="" 
+                    onkeyup="getSearchedReservation(this.value, 'name');">
+                </div>
+                <div class="col-6 mt-3">
                     <button class="btn btn-secondary" onclick="listActiveReservations();">List All Active Reservations</button>
                 </div>
-
             </div>
 
             <div id="active-reservations">

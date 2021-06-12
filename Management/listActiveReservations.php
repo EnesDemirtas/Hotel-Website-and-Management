@@ -9,7 +9,7 @@ rrd.check_out_date, rrd.number_of_adults, rrd.number_of_children, rrd.total_pric
 INNER JOIN reservation_record_details rrd ON rr.id = rrd.reservation_id INNER JOIN rooms r ON r.room_no = rr.room_no
 INNER JOIN room_types rt ON rt.id = r.room_type 
 WHERE rr.isActive = 1 ORDER BY rrd.check_in_date DESC");
-} else {
+} else if($type === "logs"){
     $date1 = $_POST['dates'][0];
     $date2 = $_POST['dates'][1];
 

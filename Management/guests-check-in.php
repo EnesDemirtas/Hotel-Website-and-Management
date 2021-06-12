@@ -3,6 +3,10 @@ session_start();
 include '../phpFunctions/databaseConnection.php';
 include '../phpFunctions/routing.php';
 include '../phpFunctions/security.php';
+
+if (!isset($_SESSION['session_username'])) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -43,7 +47,7 @@ include '../phpFunctions/security.php';
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="staff-profile.php">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
                         </li>
@@ -151,13 +155,14 @@ include '../phpFunctions/security.php';
                         <div class="col-md-4">
                             <label for="check-in-date">Check In Date</label>
                             <input type="date" name="check-in-date" id="check-in-date" class="form-control" 
-                            onchange="check_date_validity();" value="<?php echo $current_date ?>">
+                            onchange="check_date_validity();" value="<?php echo $current_date ?>" min="<?php echo $current_date ?>"
+                            max="javascript:document.getElementById('check-out-date').value">
                         </div>
 
                         <div class="col-md-4">
                             <label for="check-out-date">Check Out Date</label>
                             <input type="date" name="check-out-date" id="check-out-date" class="form-control" 
-                            onchange="check_date_validity();" value="<?php echo $tomorrow_date ?>">
+                            onchange="check_date_validity();" value="<?php echo $tomorrow_date ?>" min="<?php echo $tomorrow_date ?>">
                         </div>
                     </div>
 
@@ -179,7 +184,7 @@ include '../phpFunctions/security.php';
                         <div class="col-md-4">
                             <label for="check-in-children">Children</label>
                             <select name="children" id="check-in-children" class="form-control">
-                                <option value="1">1</option>
+                                <option value="0">0</option>
                             </select>
                         </div>
                     </div>

@@ -1,8 +1,14 @@
 <?php
 session_start();
 include '../phpFunctions/databaseConnection.php';
-require "../phpFunctions/routing.php"; 
+require "../phpFunctions/routing.php";
 include '../phpFunctions/security.php';
+
+
+
+if (!isset($_SESSION['session_username_customer']) && !$_SESSION["logged_in"] === true) {
+    go("../oops.php");
+}
 ?>
 
 <head>
@@ -41,7 +47,7 @@ include '../phpFunctions/security.php';
     <?php
 
     if (isset($_POST['confirm-validation'])) {
-        $myUsername = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
+        $myUsername = escape_sanitize_input($conn, $_SESSION['session_username_customer'], "string");
         $booking_room_no = escape_sanitize_input($conn, $_SESSION['booking_room_no'], "string");
         $booking_special_request =  escape_sanitize_input($conn, $_SESSION['booking_special_request'], "string");
         $sql = "INSERT INTO reservation_records (customer_username, room_no, isActive) VALUES ('$myUsername', '$booking_room_no', 1)";
@@ -62,8 +68,8 @@ include '../phpFunctions/security.php';
             number_of_children, total_price_TL, special_request) VALUES ('$res_request_id', '$check_in_date', '$check_out_date', 
             '$number_of_adults', '$number_of_children', '$total_price', '$booking_special_request')";
 
-            if($conn->query($new_sql) === TRUE){
-                
+            if ($conn->query($new_sql) === TRUE) {
+
                 $get_customer_id = mysqli_query($conn, "SELECT id FROM users WHERE username = '$myUsername'");
                 $fetch_customer_id = $get_customer_id->fetch_all(1);
                 $customer_id = $fetch_customer_id[0]['id'];
@@ -71,15 +77,12 @@ include '../phpFunctions/security.php';
                 $change_room_status = "UPDATE rooms SET isAvailable = 0, isFull = 1, customer_id = '$customer_id' 
                 WHERE room_no = $booking_room_no ";
 
-                if($conn->query($change_room_status) === TRUE){
-                //   echo "New reservation request created successfully"; 
-                echo "<div class='text-center bg-success text-white'> Reservation is created successfully. You are redirected to the user profile page... </div>";
-                go("user-personal-infos.php",5);
+                if ($conn->query($change_room_status) === TRUE) {
+                    //   echo "New reservation request created successfully"; 
+                    echo "<div class='text-center bg-success text-white'> Reservation is created successfully. You are redirected to the user profile page... </div>";
+                    go("user-personal-infos.php", 5);
                 }
- 
-            } 
-
-
+            }
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -114,10 +117,10 @@ include '../phpFunctions/security.php';
                     </li>
                     <?php
 
-                    if (isset($_SESSION['session_username']) && isset($_SESSION['logged_in'])) {
-                        if($_SESSION['logged_in'] === true){
+                    if (isset($_SESSION['session_username_customer']) && isset($_SESSION['logged_in'])) {
+                        if ($_SESSION['logged_in'] === true) {
                             echo "<li class='nav-item'>
-                            <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+                            <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username_customer'] . " </a>
                         </li>
                         <li class='nav-item'>
                         <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>
@@ -128,12 +131,11 @@ include '../phpFunctions/security.php';
                             </button>
                         </form>
                         </li>";
-                        } else{
+                        } else {
                             echo " <li class='nav-item'>
                             <a class='nav-link' href='login.php'>LOGIN</a>
                         </li>";
                         }
-
                     } else {
                         echo " <li class='nav-item'>
                             <a class='nav-link' href='login.php'>LOGIN</a>

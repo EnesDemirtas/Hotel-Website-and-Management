@@ -77,7 +77,7 @@ include '../phpFunctions/security.php';
         $username = escape_sanitize_input($conn, $_POST['login_username'], "string");
         $password = $_POST['login_password'];
 
-        $_SESSION["session_username"] = $username;
+        $_SESSION["session_username_customer"] = $username;
 
 
         if ($username != '' and $password != '') {
@@ -91,7 +91,7 @@ include '../phpFunctions/security.php';
                 if (password_verify($password, $hashed_pw)) {
                     session_regenerate_id(true);
                     $_SESSION['logged_in'] = true;
-                    $_SESSION['username'] = $username;
+                    $_SESSION['username_customer'] = $username;
 
                     header("Location:user-personal-infos.php");
                     die();

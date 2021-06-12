@@ -2,6 +2,10 @@
 include '../phpFunctions/databaseConnection.php';
 include 'getPersonalInfos.php';
 require "../phpFunctions/routing.php"; 
+
+if (!isset($_SESSION['session_username_customer']) && !$_SESSION["logged_in"] === true) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +63,7 @@ require "../phpFunctions/routing.php";
                         <a class="nav-link" href="contact.php">CONTACT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" href="#" style="text-decoration:underline;"><?php echo $_SESSION['session_username'] ?></a>
+                        <a class="nav-link text-uppercase" href="#" style="text-decoration:underline;"><?php echo $_SESSION['session_username_customer'] ?></a>
                     </li>
                     <li class="nav-item">
                         <!-- <a class="nav-link logout" href="login.php">

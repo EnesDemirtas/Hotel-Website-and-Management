@@ -16,7 +16,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body class="bg-success row position-relative" style="height: 100vh; width: 100vw; color: #541987;">
@@ -32,14 +32,30 @@
             401 : NOT AUTHORIZED
         </h2>
         <h4 class="error-message" style="font-family:Comic Sans MS, Comic Sans, cursive; font-size: 24px; font-weight: 800; letter-spacing: 1.5px;">
-            Sorry but You do not have permission to view this directory or page...
+            Sorry but You do not have permission to view this directory or page. Please log in and try again...
         </h4>
         <div class="mt-5 d-flex align-items-center">
-            <a href="#" style="text-decoration: none; color: #541987;">
+            <a href="Customer/index.php" style="text-decoration: none; color: #541987;">
                 <i class="fas fa-arrow-circle-right me-5" style="font-size: 64px; font-weight: 800;"></i>
             </a>
-            <a href="#" style="text-decoration: none; color: #541987; font-size: 26px; font-weight: 800; letter-spacing: 2px;
+            <a href="Customer/index.php" style="text-decoration: none; color: #541987; font-size: 26px; font-weight: 800; letter-spacing: 2px;
                 font-family:Comic Sans MS, Comic Sans, cursive;">HOTEL MAZARIN HOME PAGE</a>
+
+        </div>
+        <div class="mt-5 d-flex align-items-center">
+            <a href="Management/login.php" style="text-decoration: none; color: #541987;">
+                <i class="fas fa-arrow-circle-right me-5" style="font-size: 64px; font-weight: 800;"></i>
+            </a>
+            <a href="Management/login.php" style="text-decoration: none; color: #541987; font-size: 26px; font-weight: 800; letter-spacing: 2px;
+                font-family:Comic Sans MS, Comic Sans, cursive;">MANAGEMENT PAGE</a>
+
+        </div>
+        <div class="mt-5 d-flex align-items-center">
+            <a href="javascript:history.go(-1)" style="text-decoration: none; color: #541987;">
+                <i class="fas fa-arrow-circle-right me-5" style="font-size: 64px; font-weight: 800;"></i>
+            </a>
+            <a href="javascript:history.go(-1)" style="text-decoration: none; color: #541987; font-size: 26px; font-weight: 800; letter-spacing: 2px;
+                font-family:Comic Sans MS, Comic Sans, cursive;">TURN BACK</a>
 
         </div>
     </div>

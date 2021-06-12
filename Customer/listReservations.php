@@ -10,7 +10,7 @@ function listCurrentReservations($conn){
 
 
     $current_date = date('Y-m-d');
-    $session_username = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
+    $session_username = escape_sanitize_input($conn, $_SESSION['session_username_customer'], "string");
 
     $checkCurrentReservations = mysqli_query(
         $conn,
@@ -101,7 +101,7 @@ function listPastReservations($conn){
     
     $current_date = date('Y-m-d');
 
-    $session_username = $_SESSION['session_username'];
+    $session_username = $_SESSION['session_username_customer'];
 
     $checkPastReservations = mysqli_query(
         $conn,

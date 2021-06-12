@@ -90,11 +90,11 @@ function listActiveReservations() {
     });
 }
 
-function getSearchedReservation(val) {
+function getSearchedReservation(val, type) {
     $.ajax({
         url: 'getSearchedReservation.php',
         method: 'POST',
-        data: { room_no: val },
+        data: { value: val , type: type},
         success: function (result) {
             document.getElementById('active-reservations').innerHTML = "";
             if(result.length == 82){

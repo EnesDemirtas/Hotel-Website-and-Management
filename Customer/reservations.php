@@ -1,6 +1,11 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
 include 'listReservations.php';
+include '../phpFunctions/routing.php';
+
+if (!isset($_SESSION['session_username_customer']) && !$_SESSION["logged_in"] === true) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,10 +71,10 @@ include 'listReservations.php';
                     </li>
                     <?php
 
-                    if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
+                    if (isset($_SESSION['session_username_customer']) && $_SESSION["logged_in"] === true) {
 
                         echo "<li class='nav-item'>
-        <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+        <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username_customer'] . " </a>
     </li>
     <li class='nav-item'>
     <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>
@@ -108,7 +113,7 @@ include 'listReservations.php';
 
 
         $cancel_room_no = escape_sanitize_input($conn, $_POST['cancel-room-no'], "string");
-        $session_username = escape_sanitize_input($conn, $_SESSION['session_username'], "string");
+        $session_username = escape_sanitize_input($conn, $_SESSION['session_username_customer'], "string");
 
         $new_sql = "UPDATE reservation_records SET isActive = 0 
         WHERE customer_username = '$session_username' and room_no = '$cancel_room_no' and isActive = 1 ";
@@ -135,7 +140,7 @@ include 'listReservations.php';
 
     if (isset($_POST['request-message'])) {
 
-        $username_session = $_SESSION['session_username'];
+        $username_session = $_SESSION['session_username_customer'];
         $message_room_no = escape_sanitize_input($conn, $_POST['message-room-no'], "string");
         $current_datetime = date('Y-m-d H:i:s');
         $request_message =  escape_sanitize_input($conn,$_POST['message'], "string");
@@ -154,7 +159,7 @@ include 'listReservations.php';
 
     if (isset($_POST['feedback-message'])) {
 
-        $username_session = $_SESSION['session_username'];
+        $username_session = $_SESSION['session_username_customer'];
         $feedback_message_room_no = escape_sanitize_input($conn, $_POST['feedback-message-room-no'], "string");
         $current_datetime = date('Y-m-d H:i:s');
         $feedback_message = escape_sanitize_input($conn, $_POST['feedbackmessage'], "string");

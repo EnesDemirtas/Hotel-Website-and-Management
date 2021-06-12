@@ -72,10 +72,10 @@ require "../phpFunctions/routing.php";
                     </li>
                     <?php
 
-                    if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
+                    if (isset($_SESSION['session_username_customer']) && $_SESSION["logged_in"] === true) {
 
                         echo "<li class='nav-item'>
-                            <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+                            <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username_customer'] . " </a>
                         </li>
                         <li class='nav-item'>
                         <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>
@@ -122,7 +122,7 @@ require "../phpFunctions/routing.php";
         $_SESSION['booking_check_in_date'] = escape_sanitize_input($conn, $_POST['booking-check-in-date'], "string");
         $_SESSION['booking_check_out_date'] = escape_sanitize_input($conn, $_POST['booking-check-out-date'], "string");
 
-        if (!isset($_SESSION['session_username']) && !$_SESSION["logged_in"] === true) {
+        if (!isset($_SESSION['session_username_customer']) && !$_SESSION["logged_in"] === true) {
             go("guest-booking.php");
         }
     }

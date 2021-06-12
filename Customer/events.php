@@ -53,10 +53,10 @@
                     </li>
                     <?php
 
-                    if (isset($_SESSION['session_username']) && $_SESSION["logged_in"] === true) {
+                    if (isset($_SESSION['session_username_customer']) && $_SESSION["logged_in"] === true) {
 
                         echo "<li class='nav-item'>
-        <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username'] . " </a>
+        <a class='nav-link text-uppercase' href='user-personal-infos.php' style='text-decoration:underline;'>" . $_SESSION['session_username_customer'] . " </a>
     </li>
     <li class='nav-item'>
     <form action=" . $_SERVER["PHP_SELF"]  . " method='POST'>

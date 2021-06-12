@@ -1,5 +1,10 @@
 <?php session_start();
 include '../phpFunctions/databaseConnection.php';
+include '../phpFunctions/routing.php';
+
+if (!isset($_SESSION['session_username'])) {
+    go("../oops.php");
+}
 ?>
 <!DOCTYPE php>
 <html lang="en">
@@ -42,7 +47,7 @@ include '../phpFunctions/databaseConnection.php';
 
                     <ul class="nav d-flex justify-content-end" style="width:50%">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="staff-profile.php">
                                 <?php echo $_SESSION["session_username"] ?>
                             </a>
                         </li>

@@ -73,7 +73,7 @@ function update_total_price() {
             var max_children = Number(myArray[2]);
             document.getElementById('check-in-children').innerHTML = "";
             for (var i = 0; i < max_children; i++) {
-                var myElement = `<option value='${i + 1}'>${i + 1}</option>`;
+                var myElement = `<option value='${i}'>${i}</option>`;
                 document.getElementById('check-in-children').innerHTML += myElement;
             }
 
@@ -83,3 +83,4 @@ function update_total_price() {
 
     })
 }
+
